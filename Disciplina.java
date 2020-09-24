@@ -8,7 +8,7 @@ public class Disciplina {
     Periodo periodo;
     Docente professor;
 
-    public void cadastraDisciplina(Scanner scanner, List<Periodo> periodos, List<Docente> professores){
+    public Disciplina cadastraDisciplina(Scanner scanner, List<Periodo> periodos, List<Docente> professores){
         String codigo;
         String nome;
         String periodo;
@@ -22,7 +22,7 @@ public class Disciplina {
         System.out.println("Digite o nome da disciplina: ");
         nome = scanner.nextLine();
 
-        //Organiza e procura pelo período
+        /*      Organiza e procura pelo período     */
         System.out.println("Digite o periodo [Ano/Semestre]: ");
         periodo = scanner.nextLine();
 
@@ -30,7 +30,7 @@ public class Disciplina {
         ano = Integer.parseInt(split[0]);
         semestre = split[1];
 
-        //Percorre a lista de periodos procurando o especificado e referencia
+        /*      Percorre a lista de periodos procurando o especificado e referencia     */
         int achou = 0;
         for (Periodo i : periodos){
             if(ano == i.ano && semestre.equals(i.semestre)){
@@ -42,7 +42,7 @@ public class Disciplina {
         if (achou == 0) System.out.println("Não foi possível encontrar o período especificado") ;
 
 
-        //Fazer o mesmo com o docente responsável
+        /*      Fazer o mesmo com o docente responsável     */
         System.out.println("Digite o login institucional do docente responsável: ");
         professor = scanner.nextLine();
 
@@ -59,5 +59,7 @@ public class Disciplina {
 
         this.codigo = codigo;
         this.nome = nome;
+
+        return this;
     }
 }

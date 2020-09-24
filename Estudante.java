@@ -4,7 +4,7 @@ public class Estudante {
         int matricula;
         String nome;
 
-        public void cadastraEstudante(Scanner scanner){
+        public Estudante cadastraEstudante(Scanner scanner){
                 int matricula;
                 String nome;
                 
@@ -16,5 +16,7 @@ public class Estudante {
 
                 this.matricula = matricula;
                 this.nome = nome;
+
+                return this;
         }
 }

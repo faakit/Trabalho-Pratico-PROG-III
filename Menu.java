@@ -31,10 +31,12 @@ public class Menu {
                     docentes.add(novoDocente.cadastraDocente(scanner));
                     break;
                 case 3:
-                    
+                    Disciplina novaDisciplina = new Disciplina();
+                    disciplinas.add(novaDisciplina.cadastraDisciplina(scanner, periodos, docentes));
                     break;
                 case 4:
-                    
+                    Estudante novoEstudante = new Estudante();
+                    estudantes.add(novoEstudante.cadastraEstudante(scanner));
                     break;
                 case 5:
                     break;
