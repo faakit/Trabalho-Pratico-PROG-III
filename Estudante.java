@@ -12,11 +12,16 @@ public class Estudante {
                 matricula = scanner.nextInt();
         
                 System.out.println("Digite o nome completo: ");
+                scanner.nextLine();
                 nome = scanner.nextLine();
 
                 this.matricula = matricula;
                 this.nome = nome;
 
+                return this;
+        }
+
+        public Estudante retornaEstudante(){
                 return this;
         }
 }

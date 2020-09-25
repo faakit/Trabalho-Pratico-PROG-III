@@ -9,7 +9,7 @@ public class Periodo{
         String entrada;
 
         System.out.println("Digite o periodo [Ano/Semestre]: ");
-        entrada = scanner.nextLine();
+        scanner.nextLine();
         entrada = scanner.nextLine();
 
         String[] split = entrada.split(Pattern.quote("/"));

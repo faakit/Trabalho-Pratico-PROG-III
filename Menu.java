@@ -7,8 +7,8 @@ public class Menu {
 
         List<Periodo> periodos = new ArrayList<>();
         List<Docente> docentes = new ArrayList<>();
-        List<Estudante> estudantes = new ArrayList<>();
-        List<Disciplina> disciplinas = new ArrayList<>();
+        Map<Integer, Estudante> estudantes = new HashMap<>();
+        List<Disciplina> disciplinas = new ArrayList<>(); 
 
         do{
             System.out.println("Escolha uma opção");
@@ -17,7 +17,8 @@ public class Menu {
             System.out.println("2 - Cadastrar docente");
             System.out.println("3 - Cadastrar disciplina");
             System.out.println("4 - Cadastrar estudante");
-            System.out.println("5 - Sair");
+            System.out.println("5 - Matricular estudante em disciplina");
+            System.out.println("6 - Sair");
 
             escolha = scanner.nextInt();
 
@@ -36,9 +37,14 @@ public class Menu {
                     break;
                 case 4:
                     Estudante novoEstudante = new Estudante();
-                    estudantes.add(novoEstudante.cadastraEstudante(scanner));
+                    novoEstudante.cadastraEstudante(scanner);
+                    estudantes.put(novoEstudante.matricula , novoEstudante.retornaEstudante());
                     break;
                 case 5:
+                    Designacoes.cadastraAlunoEmDisciplina(scanner, estudantes, disciplinas);
+                    break;
+                case 6:
+                    scanner.close();
                     break;
                 default:
                     

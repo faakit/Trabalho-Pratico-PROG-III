@@ -12,6 +12,7 @@ public class Docente {
         char escolha;
         
         System.out.println("Digite o login institucional: ");
+        scanner.nextLine();
         login = scanner.nextLine();
 
         System.out.println("Digite o nome completo: ");
@@ -22,6 +23,7 @@ public class Docente {
 
         if(escolha == 's' || escolha == 'S'){
             System.out.println("Digite o website: ");
+            scanner.nextLine();
             website = scanner.nextLine();
         }else{
             website = "NA";

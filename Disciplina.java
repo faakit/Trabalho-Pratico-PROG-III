@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class Disciplina {
@@ -7,6 +6,7 @@ public class Disciplina {
     String nome;
     Periodo periodo;
     Docente professor;
+    List<Estudante> alunos;
 
     public Disciplina cadastraDisciplina(Scanner scanner, List<Periodo> periodos, List<Docente> professores){
         String codigo;
@@ -17,6 +17,7 @@ public class Disciplina {
         String semestre;
 
         System.out.println("Digite o codigo da disciplina: ");
+        scanner.nextLine();
         codigo = scanner.nextLine();
         
         System.out.println("Digite o nome da disciplina: ");
@@ -61,5 +62,9 @@ public class Disciplina {
         this.nome = nome;
 
         return this;
+    }
+
+    public void cadastraEstudante( Estudante estudante ){
+        this.alunos.add(estudante);
     }
 }
