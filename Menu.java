@@ -18,7 +18,8 @@ public class Menu {
             System.out.println("3 - Cadastrar disciplina");
             System.out.println("4 - Cadastrar estudante");
             System.out.println("5 - Matricular estudante em disciplina");
-            System.out.println("6 - Sair");
+            System.out.println("6 - Cadastrar atividade de disciplina");
+            System.out.println("7 - Sair");
 
             escolha = scanner.nextInt();
 
@@ -44,6 +45,9 @@ public class Menu {
                     Designacoes.cadastraAlunoEmDisciplina(scanner, estudantes, disciplinas);
                     break;
                 case 6:
+                    Designacoes.cadastraAtividadeEmDisciplina(scanner, disciplinas);
+                    break;
+                case 7:
                     scanner.close();
                     break;
                 default:

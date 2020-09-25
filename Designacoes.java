@@ -18,6 +18,16 @@ public class Designacoes {
         }
     }
 
+    public static void cadastraAtividadeEmDisciplina(Scanner scanner, List<Disciplina> disciplinas){
+        System.out.println("Digite o codigo da disciplina: ");
+        scanner.nextLine();
+        String codigo = scanner.nextLine();
 
+        for(Disciplina i : disciplinas){
+            if(i.codigo.equals(codigo)){
+                i.novaAtividade(scanner);
+            }
+        }
+    }
 
 }

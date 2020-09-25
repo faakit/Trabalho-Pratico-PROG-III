@@ -7,6 +7,7 @@ public class Disciplina {
     Periodo periodo;
     Docente professor;
     List<Estudante> alunos;
+    Map<Integer, Atividade> atividades;
 
     public Disciplina cadastraDisciplina(Scanner scanner, List<Periodo> periodos, List<Docente> professores){
         String codigo;
@@ -15,6 +16,8 @@ public class Disciplina {
         String professor;
         int ano;
         String semestre;
+        this.atividades = new HashMap<>();
+        this.alunos = new ArrayList<>();
 
         System.out.println("Digite o codigo da disciplina: ");
         scanner.nextLine();
@@ -66,5 +69,14 @@ public class Disciplina {
 
     public void cadastraEstudante( Estudante estudante ){
         this.alunos.add(estudante);
+    }
+
+    public void novaAtividade(Scanner scanner){
+        System.out.println("Digite o nome da atividade: ");
+        scanner.nextLine();
+        String nome = scanner.nextLine();
+
+        Atividade atividade = new Atividade(this.atividades.size() + 1, nome);
+        this.atividades.put(this.atividades.size() + 1, atividade);
     }
 }
