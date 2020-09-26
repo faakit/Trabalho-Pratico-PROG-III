@@ -21,7 +21,7 @@ public class Disciplina {
 
         System.out.println("Digite o codigo da disciplina: ");
         scanner.nextLine();
-        codigo = scanner.nextLine();
+        codigo = scanner.nextLine().toUpperCase();
         
         System.out.println("Digite o nome da disciplina: ");
         nome = scanner.nextLine();
@@ -32,7 +32,7 @@ public class Disciplina {
 
         String[] split = periodo.split(Pattern.quote("/"));
         ano = Integer.parseInt(split[0]);
-        semestre = split[1];
+        semestre = split[1].toUpperCase();
 
         /*      Percorre a lista de periodos procurando o especificado e referencia     */
         int achou = 0;

@@ -15,7 +15,7 @@ public class Periodo{
         String[] split = entrada.split(Pattern.quote("/"));
 
         this.ano = Integer.parseInt(split[0]);
-        this.semestre = split[1];
+        this.semestre = split[1].toUpperCase();
 
         return this;
     }

@@ -11,6 +11,11 @@ public class Menu {
         List<Disciplina> disciplinas = new ArrayList<>(); 
 
         do{
+
+            /*     
+            Para listar qualquer um dos cadastros (e verificar) basta repetir o número      
+            Exemplo: "11" para verificar os períodos cadastrados        
+            */
             System.out.println("Escolha uma opção");
             System.out.println("-------------------------\n");
             System.out.println("1 - Cadastrar periodo");
@@ -22,6 +27,7 @@ public class Menu {
             System.out.println("7 - Cadastrar nota de aluno em atividade");
             System.out.println("8 - Sair");
 
+            
             escolha = scanner.nextInt();
 
             switch (escolha) {
@@ -53,6 +59,9 @@ public class Menu {
                     break;
                 case 8:
                     scanner.close();
+                    break;
+                case 11:
+                    Testes.verificaPeriodos(periodos);
                     break;
                 default:
                     

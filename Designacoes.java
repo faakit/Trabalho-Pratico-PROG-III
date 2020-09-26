@@ -15,14 +15,14 @@ public class Designacoes {
 
         System.out.println(DIGITACODIGO);
         scanner.nextLine();
-        String codigo = scanner.nextLine();
+        String codigo = scanner.nextLine().toUpperCase();
 
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine();
 
         String[] split = periodo.split(Pattern.quote("/"));
         int ano = Integer.parseInt(split[0]);
-        String semestre = split[1];
+        String semestre = split[1].toUpperCase();
 
 
         /*      Busca a disciplina com codigo e período e cadastra o aluno     */
@@ -37,14 +37,14 @@ public class Designacoes {
     public static void cadastraAtividadeEmDisciplina(Scanner scanner, List<Disciplina> disciplinas){
         System.out.println(DIGITACODIGO);
         scanner.nextLine();
-        String codigo = scanner.nextLine();
+        String codigo = scanner.nextLine().toUpperCase();
 
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine();
 
         String[] split = periodo.split(Pattern.quote("/"));
         int ano = Integer.parseInt(split[0]);
-        String semestre = split[1];
+        String semestre = split[1].toUpperCase();
 
         /*      Busca a disciplina com codigo e período e cadastra atividade     */
         for(Disciplina i : disciplinas){
@@ -59,14 +59,14 @@ public class Designacoes {
 
         System.out.println(DIGITACODIGO);
         scanner.nextLine();
-        String codigo = scanner.nextLine();
+        String codigo = scanner.nextLine().toUpperCase();
 
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine();
 
         String[] split = periodo.split(Pattern.quote("/"));
         int ano = Integer.parseInt(split[0]);
-        String semestre = split[1];
+        String semestre = split[1].toUpperCase();
 
         System.out.println("Digite o índice da atividade: ");
         int numAtividade = scanner.nextInt();
