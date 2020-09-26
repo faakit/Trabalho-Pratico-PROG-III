@@ -1,9 +1,9 @@
 public class Nota {
     Estudante estudante;
     Atividade atividade;
-    float notaDoAluno;
+    double notaDoAluno;
 
-    public Nota(Estudante estudante, Atividade atividade, float nota){
+    public Nota(Estudante estudante, Atividade atividade, double nota){
         this.atividade = atividade;
         this.estudante = estudante;
         this.notaDoAluno = nota;

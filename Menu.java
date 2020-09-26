@@ -2,6 +2,8 @@ import java.util.*;
 
 public class Menu {
     public static void main(String[] args) {
+        Locale.setDefault(new Locale("pt", "BR"));
+
         Scanner scanner = new Scanner(System.in);
         int escolha;
 
@@ -14,7 +16,7 @@ public class Menu {
 
             /*     
             Para listar qualquer um dos cadastros (e verificar) basta repetir o número      
-            Exemplo: "11" para verificar os períodos cadastrados        
+            Exemplo: "11" para verificar os períodos cadastrados , "22" verificar docentes       
             */
             System.out.println("Escolha uma opção");
             System.out.println("-------------------------\n");
@@ -62,6 +64,24 @@ public class Menu {
                     break;
                 case 11:
                     Testes.verificaPeriodos(periodos);
+                    break;
+                case 22:
+                    Testes.verificaDocentes(docentes);
+                    break;
+                case 33:
+                    Testes.verificaDisciplinas(disciplinas);
+                    break;
+                case 44:
+                    Testes.verificaEstudantes(estudantes);
+                    break;
+                case 55:
+                    Testes.verificaAlunosEmDisciplina(disciplinas, scanner);
+                    break;
+                case 66:
+                    Testes.obterAtividadesDaDisciplina(disciplinas, scanner);
+                    break;
+                case 77:
+                    Testes.obterNotasEmAtividade(disciplinas, scanner);
                     break;
                 default:
                     

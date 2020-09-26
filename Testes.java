@@ -41,7 +41,7 @@ public class Testes {
 
         System.out.println(("Disciplinas cadastradas: "));
         for(Disciplina i : disciplinas){
-            System.out.println(i.codigo + "-" + i.periodo);
+            System.out.println(i.codigo + "-" + i.periodo.ano + "/" + i.periodo.semestre);
         }
         pressionaEnter();
 
@@ -135,7 +135,6 @@ public class Testes {
 
         System.out.println("Digite o numero da atividade: ");
         int numero = scanner.nextInt();
-        scanner.nextLine();
 
         for (Disciplina i : disciplinas){
 
@@ -145,7 +144,7 @@ public class Testes {
                 Atividade j = i.atividades.get(numero);
                 
                 for(Nota k : j.notas){
-                    System.out.println("Aluno: " + k.estudante.nome + "Nota: " + k.notaDoAluno);
+                    System.out.println("Aluno: " +  k.estudante.nome + " :: " + k.estudante.matricula + " nota: " + k.notaDoAluno);
                 }
 
                 break;

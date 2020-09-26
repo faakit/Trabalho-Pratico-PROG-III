@@ -73,7 +73,6 @@ public class Disciplina {
 
     public void novaAtividade(Scanner scanner){
         System.out.println("Digite o nome da atividade: ");
-        scanner.nextLine();
         String nome = scanner.nextLine();
 
         Atividade atividade = new Atividade(this.atividades.size() + 1, nome);
