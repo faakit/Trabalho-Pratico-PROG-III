@@ -13,17 +13,20 @@ public class Testes {
         {}
     }
     
-    public static void verificaPeriodos(List<Periodo> periodos){
+    public static void verificaPeriodos(Designacoes designacoes){
 
         System.out.println("Períodos cadastrados: ");
-        for(Periodo i : periodos){
-            System.out.println(i.ano + "/" + i.semestre);
+        for(Map.Entry<String, Periodo> i : designacoes.periodos.entrySet()){
+
+            System.out.println(i.getValue());
+
         }
         
         pressionaEnter();
 
     }
 
+    /*
     public static void verificaDocentes(List<Docente> docentes){
 
         System.out.println("Docentes cadastrados: ");
@@ -41,7 +44,7 @@ public class Testes {
 
         System.out.println(("Disciplinas cadastradas: "));
         for(Disciplina i : disciplinas){
-            System.out.println(i.codigo + "-" + i.periodo.ano + "/" + i.periodo.semestre);
+            System.out.println(i.toString());
         }
         pressionaEnter();
 
@@ -154,4 +157,5 @@ public class Testes {
         pressionaEnter();
 
     }
+    */
 }

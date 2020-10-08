@@ -5,12 +5,9 @@ public class Menu {
         Locale.setDefault(new Locale("pt", "BR"));
 
         Scanner scanner = new Scanner(System.in);
-        int escolha;
+        Designacoes designacoes = new Designacoes(scanner);
 
-        List<Periodo> periodos = new ArrayList<>();
-        List<Docente> docentes = new ArrayList<>();
-        Map<Integer, Estudante> estudantes = new HashMap<>();
-        List<Disciplina> disciplinas = new ArrayList<>(); 
+        int escolha;
 
         do{
 
@@ -34,54 +31,49 @@ public class Menu {
 
             switch (escolha) {
                 case 1:
-                    Periodo novoPeriodo = new Periodo();
-                    periodos.add(novoPeriodo.cadastraPeriodo(scanner));
+                    designacoes.cadastraPeriodo();
                     break;
                 case 2:
-                    Docente novoDocente = new Docente();
-                    docentes.add(novoDocente.cadastraDocente(scanner));
+                    designacoes.cadastraDocente();
                     break;
                 case 3:
-                    Disciplina novaDisciplina = new Disciplina();
-                    disciplinas.add(novaDisciplina.cadastraDisciplina(scanner, periodos, docentes));
+                    designacoes.cadastraDisciplina();
                     break;
                 case 4:
-                    Estudante novoEstudante = new Estudante();
-                    novoEstudante.cadastraEstudante(scanner);
-                    estudantes.put(novoEstudante.matricula , novoEstudante.retornaEstudante());
+                    designacoes.cadastraEstudante();
                     break;
                 case 5:
-                    Designacoes.cadastraAlunoEmDisciplina(scanner, estudantes, disciplinas);
+                    designacoes.cadastraAlunoEmDisciplina();
                     break;
                 case 6:
-                    Designacoes.cadastraAtividadeEmDisciplina(scanner, disciplinas);
+                    designacoes.cadastraAtividadeEmDisciplina();
                     break;
                 case 7:
-                    Designacoes.cadastraNotaEmAtividade(scanner, disciplinas, estudantes);
+                    // designacoes.cadastraNotaEmAtividade();
                     break;
                 case 8:
                     scanner.close();
                     break;
                 case 11:
-                    Testes.verificaPeriodos(periodos);
+                    Testes.verificaPeriodos(designacoes);
                     break;
                 case 22:
-                    Testes.verificaDocentes(docentes);
+                    // Testes.verificaDocentes(docentes);
                     break;
                 case 33:
-                    Testes.verificaDisciplinas(disciplinas);
+                    // Testes.verificaDisciplinas(disciplinas);
                     break;
                 case 44:
-                    Testes.verificaEstudantes(estudantes);
+                    // Testes.verificaEstudantes(estudantes);
                     break;
                 case 55:
-                    Testes.verificaAlunosEmDisciplina(disciplinas, scanner);
+                    // Testes.verificaAlunosEmDisciplina(disciplinas, scanner);
                     break;
                 case 66:
-                    Testes.obterAtividadesDaDisciplina(disciplinas, scanner);
+                    // Testes.obterAtividadesDaDisciplina(disciplinas, scanner);
                     break;
                 case 77:
-                    Testes.obterNotasEmAtividade(disciplinas, scanner);
+                    // Testes.obterNotasEmAtividade(disciplinas, scanner);
                     break;
                 default:
                     
