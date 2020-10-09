@@ -1,4 +1,6 @@
 import java.util.regex.Pattern;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Designacoes {
@@ -111,7 +113,8 @@ public class Designacoes {
 
         Disciplina disciplina = new Disciplina(codigo, nome, periodo, professor);
         disciplinas.put(disciplina.toString(), disciplina);
-
+        
+        professor.addDisciplina(disciplina);
     }
 
     public void cadastraAlunoEmDisciplina(){
@@ -126,7 +129,7 @@ public class Designacoes {
         String periodo = scanner.nextLine();
 
         disciplinas.get(codigo + "-" + periodo).alunos.put(matricula, estudantes.get(matricula));
-
+        estudantes.get(matricula).disciplinas.add(disciplinas.get(codigo + "-" + periodo));
     }
 
     public void cadastraAtividadeEmDisciplina(){
@@ -137,21 +140,38 @@ public class Designacoes {
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine();
 
-        System.out.println("Digite o nome da atividade: ");
-        String nome = scanner.nextLine();
+        int i;
+        do {
+            
+            System.out.println("Qual tipo de atividade? ");
+            System.out.println("1 - Prova ");
+            System.out.println("2 - Trabalho ");
+            System.out.println("3 - Estudo ");
+            System.out.println("4 - Aula ");
 
-        Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
-        Atividade atividade = new Atividade(disciplina.atividades.size() + 1, nome);
-        disciplina.atividades.put(disciplina.atividades.size() + 1, atividade);
+            i = scanner.nextInt();
+            scanner.nextLine();
 
+            switch (i){
+                case 1:
+                    criaProva(codigo, periodo);
+                    break;
+                case 2:
+                    criaTrabalho(codigo, periodo);
+                    break;
+                case 3:
+                    criaEstudo(codigo, periodo);
+                    break;
+                case 4:
+                    criaAula(codigo, periodo);
+                    break;
+                default:
+            }
+        } while (i!= 1 || i!= 2 || i!= 3 || i!=4);
 
     }
 
-
-
-    /* 
     public void cadastraNotaEmAtividade(){
-
         System.out.println(DIGITACODIGO);
         scanner.nextLine();
         String codigo = scanner.nextLine().toUpperCase();
@@ -159,12 +179,306 @@ public class Designacoes {
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine();
 
-        System.out.println("Digite o índice da atividade: ");
-        int numAtividade = scanner.nextInt();
+        System.out.println("Digite o número da atividade: ");
+        int numero = scanner.nextInt();
+        scanner.nextLine();
 
-        disciplinas.get(codigo + "-" + periodo).atividades.get(numAtividade).designaNotaAluno(scanner, estudantes);
+        System.out.println(DIGITAMATRICULA);
+        int matricula = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Digite a nota do aluno: ");
+        double nota = scanner.nextDouble();
+        scanner.nextLine();
+
+        Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
+        Nota novaNota = new Nota(estudantes.get(matricula), nota);
+        estudantes.get(matricula).incrementaAvaliacoes();
+        estudantes.get(matricula).incrementaTotalAvaliacoes(nota);
+
+        disciplina.atividades.get(numero).notas.put(novaNota.getMatricula() ,novaNota);
     }
-    */
 
+    /* Funções criadoras de subtipos de atividades  */
+    private void criaProva(String codigo, String periodo){
+        System.out.println("Digite o nome da atividade: ");
+        String nome = scanner.nextLine();
+
+        System.out.println("Digite a data e horário da prova [dd-MM-yyyy HH:mm]: ");
+        String strData = scanner.nextLine();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        LocalDateTime data = LocalDateTime.parse(strData, formatter);
+
+        System.out.println("Digite o conteudo da prova: ");
+        String conteudo = scanner.nextLine();
+
+        Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
+        Atividade atividade = new Prova(disciplina.atividades.size() + 1, nome, data, conteudo);
+        disciplina.atividades.put(disciplina.atividades.size() + 1, atividade);
+    }
+
+    private void criaTrabalho(String codigo, String periodo){
+        System.out.println("Digite o nome da atividade: ");
+        String nome = scanner.nextLine();
+
+        System.out.println("Digite o prazo final [dd-MM-yyyy HH:mm]: ");
+        String strData = scanner.nextLine();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        LocalDateTime data = LocalDateTime.parse(strData, formatter);
+
+        System.out.println("Numero maximo de alunos por grupo: ");
+        int nAlunos = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Carga horária esperada: ");
+        double cargaHoraria = scanner.nextDouble();
+        scanner.nextLine();
+
+        Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
+        Atividade atividade = new Trabalho(disciplina.atividades.size() + 1, nome, data, nAlunos, cargaHoraria);
+        disciplina.atividades.put(disciplina.atividades.size() + 1, atividade);
+    }
+
+    private void criaEstudo(String codigo, String periodo){
+        System.out.println("Digite o nome do estudo: ");
+        String nome = scanner.nextLine();
+
+        Map<String, String> materiais = new HashMap<>();
+
+        System.out.println("Quantos materiais serão registrados? ");
+        int i = scanner.nextInt();
+        scanner.nextLine();
+
+        for(int j = 1; j <= i ; j++ ){
+            System.out.println("Digite o nome do material: ");
+            String materialNome = scanner.nextLine();
+
+            System.out.println("Digite o URL do material: ");
+            String materialUrl = scanner.nextLine();
+
+            materiais.put(materialNome, materialUrl);           
+        }
+
+        Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
+        Atividade atividade = new Estudo(disciplina.atividades.size() + 1, nome, materiais);
+        disciplina.atividades.put(disciplina.atividades.size() + 1, atividade);
+    }
+
+    private void criaAula(String codigo, String periodo){
+        System.out.println("Digite o nome da aula: ");
+        String nome = scanner.nextLine();
+
+        System.out.println("Digite a data e horário da aula [dd-MM-yyyy HH:mm]: ");
+        String strData = scanner.nextLine();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        LocalDateTime data = LocalDateTime.parse(strData, formatter);
+
+        Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
+        Atividade atividade = new Aula(disciplina.atividades.size() + 1, nome, data);
+        disciplina.atividades.put(disciplina.atividades.size() + 1, atividade);
+    }
+
+    /* Relatórios */
+    public void visaoGeralPeriodo(){
+        System.out.println(DIGITAPERIODO);
+        scanner.nextLine();
+        String entrada = scanner.nextLine();
+
+        List<Disciplina> listaOrdenada = new ArrayList<>();
+
+        System.out.println("Períodos cadastrados: ");
+
+        /* Pega as disciplinas no período informado e coloca em uma lista */
+        for(Map.Entry<String, Periodo> i : periodos.entrySet()){
+
+            if(i.getValue().toString().equals(entrada)){
+
+                for(Map.Entry<String, Disciplina> j : disciplinas.entrySet()){
+
+                    listaOrdenada.add(j.getValue());
+
+                }
+                break;
+            }
+        }
+
+        /* Ordena a lista em ordem crescente de nome da disciplina */
+        Collections.sort(listaOrdenada, (d1, d2) ->   d1.getNome().compareTo(d2.getNome()));
+
+        for(Disciplina j : listaOrdenada){
+            System.out.println("Disciplina: " + j.codigo + " : " + j.nome);
+            System.out.println("Docente: " + j.professor.getNome() + " : " + j.professor.login + "@ufes.br");
+            System.out.println("Numero de alunos matriculados: " + (j.alunos.size() + 1) );
+            System.out.println("Número de atividades propostas: " + (j.atividades.size() + 1 ) );
+        }
+    }
+
+    public void estatisticaDocentes(){
+        List<Docente> listaOrdenada = new ArrayList<>();
+
+        /* Cria a lista de docentes */
+        for( Map.Entry<String , Docente> i : docentes.entrySet()){
+            listaOrdenada.add(i.getValue());
+        }
+
+        /* Ordena a lista em ordem decrescente de nome */
+        Collections.sort(listaOrdenada, (d1, d2) ->   d2.getNome().compareTo(d1.getNome()));
+
+        for(Docente i : listaOrdenada){
+            Set<Periodo> periodos = new HashSet<>();
+            int numeroDisciplinas=0;
+            int numeroAtividades=0;
+            double totalNotas=0;
+            int nNotas = 0;
+            int atvSincronas=0;
+            int atvAssincronas=0;
+
+            /* Percorre disciplinas procurando pelo docente responsável */
+            for(Map.Entry<String, Disciplina> j : disciplinas.entrySet()){
+
+                /* Encontrado docente */
+                if(j.getValue().professor.getNome().equals(i.getNome())) { 
+
+                    periodos.add(j.getValue().periodo);
+                    numeroDisciplinas++; 
+                    numeroAtividades += j.getValue().atividades.size();
+
+                    for(Map.Entry<Integer, Atividade> k : j.getValue().atividades.entrySet()){
+
+                        if (k.getValue().sincrona) atvSincronas++;
+                        else atvAssincronas++;
+
+                        nNotas = k.getValue().notas.size();
+                        for(Map.Entry<Integer, Nota> l : k.getValue().notas.entrySet()){
+                            totalNotas += l.getValue().notaDoAluno;
+                        }
+                    }
+                }
+            }
+
+            double mediaAtivXDisciplina=0;
+            if(numeroDisciplinas != 0){
+                mediaAtivXDisciplina = (double)numeroAtividades / numeroDisciplinas;
+            }
+
+            double percentualSincXAssinc=0;
+            if (atvAssincronas != 0){
+                percentualSincXAssinc = (double)atvSincronas/atvAssincronas * 100;
+            }
+
+            double mediaNotas=0;
+            if (nNotas != 0){
+                mediaNotas = totalNotas/nNotas;
+            }
+
+            System.out.println("Nome: " + i.getNome());
+            System.out.println("Numero de disciplinas: " + numeroDisciplinas);
+            System.out.println("Numero de períodos diferentes: " + periodos.size());
+            System.out.println("Media de atividades por disciplina: " + mediaAtivXDisciplina);
+            System.out.println("Percentual de atividades Síncronas x Assíncronas: " + percentualSincXAssinc);
+            System.out.println("Média de notas em atividades: " + mediaNotas);
+        }
+
+
+    }
+
+    public void estatisticaEstudante(){
+        List<Estudante> listaOrdenada = new ArrayList<>();
+
+        for(Map.Entry<Integer, Estudante> i : estudantes.entrySet()){
+
+            listaOrdenada.add(i.getValue());
+
+        }
+
+        Collections.sort(listaOrdenada, (d1, d2) -> {
+            int c = d2.getNAvaliacoes() - d1.getNAvaliacoes();
+            if (c!=0) return c;
+            else return d1.getNome().compareTo(d2.getNome());
+        });
+
+        for(Estudante i : listaOrdenada){
+
+            Set<Periodo> periodos = new HashSet<>();
+            int nDisciplinas = 0;
+
+
+            for(Disciplina j : i.disciplinas){
+
+                periodos.add(j.periodo);
+                nDisciplinas++;
+
+            }
+
+            System.out.println("Matricula: " + i.getMatricula());
+            System.out.println("Nome: " + i.getMatricula());
+            System.out.println("Media de disciplinas por período: " + nDisciplinas/periodos.size());
+            if (nDisciplinas!=0) System.out.println("Media de avaliações por disciplina: " + i.getNAvaliacoes()/nDisciplinas );
+            System.out.println("Media de notas: " + i.getTotalAvaliacoes()/i.getNAvaliacoes() );
+    
+        }
+
+    }
+
+    public void estatisticaDisciplinasDocente(){
+
+        System.out.println("Digite o login de um docente: ");
+        String login = scanner.nextLine();
+        Docente professor = docentes.get(login);
+        List<Disciplina> listaOrdenada = new ArrayList<>();
+
+		for(Disciplina i : professor.getDisciplinas()){
+            listaOrdenada.add(i);
+        }
+
+        Collections.sort(listaOrdenada, (d1, d2) -> {
+            int c = d1.getPeriodo().toString().compareTo(d2.getPeriodo().toString());
+            if (c!=0) return c;
+            else return d1.getCodigo().compareTo(d2.getCodigo());
+        });
+
+        for (Disciplina i : listaOrdenada){
+            double nAtvSincronas = 0;
+            double cargaHorariaTotal = 0;
+            List<Atividade> atividadesOrdenada = new ArrayList<>();
+
+            for(Map.Entry<Integer, Atividade> j : i.getAtividades().entrySet()){
+
+                atividadesOrdenada.add(j.getValue());
+
+                if (j.getValue().isSincrona()) nAtvSincronas++;
+                cargaHorariaTotal += j.getValue().getCargaHoraria();
+
+            }
+
+            Collections.sort(atividadesOrdenada, (d1, d2) -> {
+                int c;
+                if (d1.getData() != null && d2.getData() != null) {
+                    c = d1.getData().compareTo(d2.getData()); 
+                    if (c!= 0) return c;
+                }
+                return d1.getNome().compareTo(d2.getNome()) ;
+            });
+
+            double porcentagemSincXAssinc = 100 * nAtvSincronas/(i.getAtividades().size() - nAtvSincronas );
+
+            System.out.println("Período acadêmico: " + i.getPeriodo());
+            System.out.println("Código: " + i.getCodigo());
+            System.out.println("Nome: " + i.getNome());
+            System.out.println("Número de atividades propostas: " + i.getAtividades().size());
+            System.out.println("Porcentagem de atividades síncronas: " + porcentagemSincXAssinc);
+            System.out.println("Carga horaria total: " + cargaHorariaTotal);
+
+            for(Atividade j : atividadesOrdenada){
+                System.out.println("Nome da atividade: " + j.getNome());
+                if (j.getData() == null){System.out.println("Atividade sem data");}
+                else System.out.println("Data: "+ j.getData().toString());
+            }
+
+        }
+    }
 
 }

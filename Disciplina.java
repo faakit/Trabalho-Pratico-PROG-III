@@ -17,6 +17,22 @@ public class Disciplina {
         atividades = new HashMap<>();
     }
 
+    public String getNome() {
+        return this.nome;
+    }
+
+    public Periodo getPeriodo(){
+        return this.periodo;
+    }
+
+    public String getCodigo() {
+        return this.codigo;
+    }
+
+    public Map<Integer, Atividade> getAtividades() {
+        return this.atividades;
+    }
+
     @Override
     public String toString(){
         return this.codigo + "-" + this.periodo.ano + "/" + this.periodo.semestre;
