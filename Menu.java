@@ -1,11 +1,12 @@
 import java.util.*;
 
 public class Menu {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Locale.setDefault(new Locale("pt", "BR"));
 
         Scanner scanner = new Scanner(System.in);
         Designacoes designacoes = new Designacoes(scanner);
+        LeitorEscritor leitorEscritor = new LeitorEscritor(designacoes);
 
         int escolha;
 
@@ -24,7 +25,9 @@ public class Menu {
             System.out.println("5 - Matricular estudante em disciplina");
             System.out.println("6 - Cadastrar atividade de disciplina");
             System.out.println("7 - Cadastrar nota de aluno em atividade");
-            System.out.println("8 - Sair");
+            System.out.println("8 - Relatorios");
+            System.out.println("9 - Salvar em disco");
+            System.out.println("10 - Carregar do disco");
 
             
             escolha = scanner.nextInt();
@@ -49,36 +52,38 @@ public class Menu {
                     designacoes.cadastraAtividadeEmDisciplina();
                     break;
                 case 7:
-                    // designacoes.cadastraNotaEmAtividade();
+                    designacoes.cadastraNotaEmAtividade();
                     break;
                 case 8:
-                    scanner.close();
+                    RelatoriosMenu relatorios = new RelatoriosMenu(scanner, designacoes);
+                    relatorios.menuRelatorios();
+                    break;
+                case 9:
+                    leitorEscritor.escreverEmDisco();
+                    break;
+                case 10:
+                    leitorEscritor.lerDoDisco();
                     break;
                 case 11:
                     Testes.verificaPeriodos(designacoes);
                     break;
                 case 22:
-                    // Testes.verificaDocentes(docentes);
+                    Testes.verificaDocentes(designacoes.docentes);
                     break;
                 case 33:
-                    // Testes.verificaDisciplinas(disciplinas);
+                    Testes.verificaDisciplinas(designacoes.disciplinas);
                     break;
                 case 44:
-                    // Testes.verificaEstudantes(estudantes);
+                    Testes.verificaEstudantes(designacoes.estudantes);
                     break;
                 case 55:
-                    // Testes.verificaAlunosEmDisciplina(disciplinas, scanner);
-                    break;
-                case 66:
-                    // Testes.obterAtividadesDaDisciplina(disciplinas, scanner);
-                    break;
-                case 77:
-                    // Testes.obterNotasEmAtividade(disciplinas, scanner);
+                    Testes.verificaAlunosEmDisciplina(designacoes.disciplinas, scanner);
                     break;
                 default:
+                
                     
             }
-        }while(escolha !=8 );
+        }while(escolha !=0 );
 
         scanner.close();
     }

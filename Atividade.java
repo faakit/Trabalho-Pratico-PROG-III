@@ -1,11 +1,15 @@
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Atividade {
+public class Atividade implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
     String nome;
     int numero;
-    Map<Integer, Nota> notas;
+    private Map<Integer, Nota> notas;
     boolean sincrona;
     double cargaHoraria;
 
@@ -19,6 +23,14 @@ public class Atividade {
 
     public String getNome(){
         return this.nome;
+    }
+
+    public Map<Integer, Nota> getNotas(){
+        return this.notas;
+    }
+
+    public void addNotas(int matricula, Nota nota){
+        this.notas.put(matricula, nota);
     }
 
     public boolean isSincrona() {

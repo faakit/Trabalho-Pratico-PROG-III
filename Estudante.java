@@ -1,12 +1,16 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Estudante {
+public class Estudante implements Serializable  {
+        
+        private static final long serialVersionUID = 1L;
+        
         private int nAvaliacoes;
         private double totalAvaliacoes;
         int matricula;
         String nome;
-        List<Disciplina> disciplinas;
+        private List<Disciplina> disciplinas;
 
         public Estudante(int matricula, String nome){
                 this.matricula = matricula;
@@ -22,6 +26,14 @@ public class Estudante {
 
         public double getTotalAvaliacoes(){
                 return this.totalAvaliacoes;
+        }
+
+        public List<Disciplina> getDisciplinas(){
+                return this.disciplinas;
+        }
+
+        public void addDisciplina(Disciplina disciplina){
+                this.disciplinas.add(disciplina);
         }
 
         public void incrementaAvaliacoes(){

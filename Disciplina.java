@@ -1,12 +1,16 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class Disciplina {
+public class Disciplina implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    
     String codigo;
     String nome;
     Periodo periodo;
     Docente professor;
-    Map<Integer, Estudante> alunos;
-    Map<Integer, Atividade> atividades;
+    private Map<Integer, Estudante> alunos;
+    private Map<Integer, Atividade> atividades;
 
     public Disciplina(String codigo, String nome, Periodo periodo, Docente professor){
         this.codigo = codigo;
@@ -16,6 +20,15 @@ public class Disciplina {
         alunos = new HashMap<>();
         atividades = new HashMap<>();
     }
+
+    public Map<Integer, Estudante> getAlunos(){
+        return this.alunos;
+    }
+
+    public void addAlunos(int matricula, Estudante estudante){
+        this.alunos.put(matricula, estudante);
+    }
+
 
     public String getNome() {
         return this.nome;
@@ -31,6 +44,10 @@ public class Disciplina {
 
     public Map<Integer, Atividade> getAtividades() {
         return this.atividades;
+    }
+
+    public void addAtividades(int numero, Atividade atividade){
+        this.atividades.put(numero, atividade);
     }
 
     @Override

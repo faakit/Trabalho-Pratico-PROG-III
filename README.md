@@ -10,8 +10,7 @@ Para compilar e rodar a aplicação basta:
 - executar o comando "java Menu"
 
 To do:
-    Listagens/Testes
-    Armazenar as notas com apenas 1 casa decimal
+    UTF-8 para mostrar as strings normalmente  //  Locale já não faz isso (?)
     refatorar classes de domínio para refatorar métodos relatórios
     Getters e Setters
 

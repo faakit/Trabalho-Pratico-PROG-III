@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class Testes {
 
@@ -25,25 +26,24 @@ public class Testes {
 
     }
 
-    /*
-    public static void verificaDocentes(List<Docente> docentes){
+    public static void verificaDocentes(Map<String , Docente> docentes){
 
         System.out.println("Docentes cadastrados: ");
-        for(Docente i : docentes){
-            System.out.println("Nome: " + i.nome);
-            System.out.println("Login: " + i.login);
-            System.out.println("Website: " + i.website);
+        for(Map.Entry<String, Docente> i : docentes.entrySet()){
+            System.out.println("Nome: " + i.getValue().getNome());
+            System.out.println("Login: " + i.getValue().login);
+            System.out.println("Website: " + i.getValue().website);
             System.out.println();
         }
 
         pressionaEnter();
     }
 
-    public static void verificaDisciplinas(List<Disciplina> disciplinas){
+    public static void verificaDisciplinas(Map<String, Disciplina> disciplinas){
 
         System.out.println(("Disciplinas cadastradas: "));
-        for(Disciplina i : disciplinas){
-            System.out.println(i.toString());
+        for( Map.Entry<String, Disciplina> i : disciplinas.entrySet() ){
+            System.out.println(i.getValue());
         }
         pressionaEnter();
 
@@ -60,7 +60,7 @@ public class Testes {
 
     }
 
-    public static void verificaAlunosEmDisciplina(List<Disciplina> disciplinas, Scanner scanner){
+    public static void verificaAlunosEmDisciplina(Map<String, Disciplina> disciplinas, Scanner scanner){
         
         System.out.println("Digite o codigo da disciplina: ");
         scanner.nextLine();
@@ -73,13 +73,13 @@ public class Testes {
         int ano = Integer.parseInt(split[0]);
         String semestre = split[1].toUpperCase();
 
-        for (Disciplina i : disciplinas){
+        for (Map.Entry<String, Disciplina> i : disciplinas.entrySet()){
 
-            if(i.codigo.equals(codigo) && i.periodo.ano == ano && i.periodo.semestre.equals(semestre)) {
+            if(i.getValue().getCodigo().equals(codigo) && i.getValue().periodo.ano == ano && i.getValue().periodo.semestre.equals(semestre)) {
 
-                System.out.println("Estudantes cadastrados em " + i.codigo + "-" + i.periodo.ano + "/" + i.periodo.semestre);
-                for(Estudante j : i.alunos){
-                    System.out.println(j.matricula + " :: " + j.nome);
+                System.out.println("Estudantes cadastrados em " + i.getValue().getCodigo() + "-" + i.getValue().getPeriodo().ano + "/" + i.getValue().getPeriodo().semestre);
+                for(Map.Entry<Integer, Estudante> j : i.getValue().getAlunos().entrySet()){
+                    System.out.println(j.getValue().matricula + " :: " + j.getValue().nome);
                 }
 
                 break;
@@ -108,7 +108,7 @@ public class Testes {
             if(i.codigo.equals(codigo) && i.periodo.ano == ano && i.periodo.semestre.equals(semestre)) {
 
                 System.out.println("Atividades cadastradas em " + i.codigo + "-" + i.periodo.ano + "/" + i.periodo.semestre );
-                for( Map.Entry<Integer, Atividade> j : i.atividades.entrySet() ){
+                for( Map.Entry<Integer, Atividade> j : i.getAtividades().entrySet() ){
 
                     Atividade atividade = j.getValue();
                     System.out.println(atividade.numero + " :: " +atividade.nome);
@@ -143,10 +143,10 @@ public class Testes {
             if(i.codigo.equals(codigo) && i.periodo.ano == ano && i.periodo.semestre.equals(semestre)) {
 
 
-                Atividade j = i.atividades.get(numero);
+                Atividade j = i.getAtividades().get(numero);
                 
-                for(Nota k : j.notas){
-                    System.out.println("Aluno: " +  k.estudante.nome + " :: " + k.estudante.matricula + " nota: " + k.notaDoAluno);
+                for(Map.Entry<Integer, Nota> k : j.getNotas().entrySet()){
+                    System.out.println("Aluno: " +  k.getValue().estudante.nome + " :: " + k.getValue().estudante.matricula + " nota: " + k.getValue().notaDoAluno);
                 }
 
                 break;
@@ -156,5 +156,4 @@ public class Testes {
         pressionaEnter();
 
     }
-    */
 }
