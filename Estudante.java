@@ -8,8 +8,8 @@ public class Estudante implements Serializable  {
         
         private int nAvaliacoes;
         private double totalAvaliacoes;
-        int matricula;
-        String nome;
+        private int matricula;
+        private String nome;
         private List<Disciplina> disciplinas;
 
         public Estudante(int matricula, String nome){

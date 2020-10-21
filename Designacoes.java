@@ -309,8 +309,8 @@ public class Designacoes {
         Collections.sort(listaOrdenada, (d1, d2) ->   d1.getNome().compareTo(d2.getNome()));
 
         for(Disciplina j : listaOrdenada){
-            System.out.println("Disciplina: " + j.codigo + " : " + j.nome);
-            System.out.println("Docente: " + j.professor.getNome() + " : " + j.professor.login + "@ufes.br");
+            System.out.println("Disciplina: " + j.getCodigo() + " : " + j.getNome());
+            System.out.println("Docente: " + j.getProfessor().getNome() + " : " + j.getProfessor().getLogin() + "@ufes.br");
             System.out.println("Numero de alunos matriculados: " + (j.getAlunos().size() + 1) );
             System.out.println("Número de atividades propostas: " + (j.getAtividades().size() + 1 ) );
             System.out.println();
@@ -341,20 +341,20 @@ public class Designacoes {
             for(Map.Entry<String, Disciplina> j : disciplinas.entrySet()){
 
                 /* Encontrado docente */
-                if(j.getValue().professor.getNome().equals(i.getNome())) { 
+                if(j.getValue().getProfessor().getNome().equals(i.getNome())) { 
 
-                    periodos.add(j.getValue().periodo);
+                    periodos.add(j.getValue().getPeriodo());
                     numeroDisciplinas++; 
                     numeroAtividades += j.getValue().getAtividades().size();
 
                     for(Map.Entry<Integer, Atividade> k : j.getValue().getAtividades().entrySet()){
 
-                        if (k.getValue().sincrona) atvSincronas++;
+                        if (k.getValue().isSincrona()) atvSincronas++;
                         else atvAssincronas++;
 
                         nNotas = k.getValue().getNotas().size();
                         for(Map.Entry<Integer, Nota> l : k.getValue().getNotas().entrySet()){
-                            totalNotas += l.getValue().notaDoAluno;
+                            totalNotas += l.getValue().getNotaDoAluno();
                         }
                     }
                 }
@@ -410,7 +410,7 @@ public class Designacoes {
 
             for(Disciplina j : i.getDisciplinas()){
 
-                periodos.add(j.periodo);
+                periodos.add(j.getPeriodo());
                 nDisciplinas++;
 
             }

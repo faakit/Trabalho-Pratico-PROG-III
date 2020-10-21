@@ -4,7 +4,7 @@ public class Aula extends Atividade {
 
     private static final long serialVersionUID = 1L;
     
-    LocalDateTime data;
+    private LocalDateTime data;
 
     public Aula(int numero, String nome, LocalDateTime data){
         super(numero, nome, true, 2);

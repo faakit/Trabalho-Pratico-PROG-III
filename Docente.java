@@ -6,9 +6,9 @@ public class Docente implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    String login;
-    String nome;
-    String website;
+    private String login;
+    private String nome;
+    private String website;
     private List<Disciplina> disciplinas;
 
     public Docente(String login, String nome, String website){
@@ -18,6 +18,14 @@ public class Docente implements Serializable {
         this.disciplinas = new ArrayList<>();
     }
     
+    public String getLogin() {
+        return this.login;
+    }
+
+    public String getWebsite() {
+        return this.website;
+    }
+
     public List<Disciplina> getDisciplinas(){
         return this.disciplinas;
     }

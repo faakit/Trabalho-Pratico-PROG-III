@@ -31,8 +31,8 @@ public class Testes {
         System.out.println("Docentes cadastrados: ");
         for(Map.Entry<String, Docente> i : docentes.entrySet()){
             System.out.println("Nome: " + i.getValue().getNome());
-            System.out.println("Login: " + i.getValue().login);
-            System.out.println("Website: " + i.getValue().website);
+            System.out.println("Login: " + i.getValue().getLogin());
+            System.out.println("Website: " + i.getValue().getWebsite());
             System.out.println();
         }
 
@@ -54,7 +54,7 @@ public class Testes {
         System.out.println("Estudantes cadastrados:");
         for(Map.Entry<Integer, Estudante> i : estudantes.entrySet()){
             Estudante aluno = i.getValue();
-            System.out.println(aluno.nome + " :: " + aluno.matricula);
+            System.out.println(aluno.getNome() + " :: " + aluno.getMatricula());
         }
         pressionaEnter();
 
@@ -75,11 +75,11 @@ public class Testes {
 
         for (Map.Entry<String, Disciplina> i : disciplinas.entrySet()){
 
-            if(i.getValue().getCodigo().equals(codigo) && i.getValue().periodo.ano == ano && i.getValue().periodo.semestre.equals(semestre)) {
+            if(i.getValue().getCodigo().equals(codigo) && i.getValue().getPeriodo().getAno() == ano && i.getValue().getPeriodo().getSemestre().equals(semestre)) {
 
-                System.out.println("Estudantes cadastrados em " + i.getValue().getCodigo() + "-" + i.getValue().getPeriodo().ano + "/" + i.getValue().getPeriodo().semestre);
+                System.out.println("Estudantes cadastrados em " + i.getValue().getCodigo() + "-" + i.getValue().getPeriodo().getAno() + "/" + i.getValue().getPeriodo().getSemestre());
                 for(Map.Entry<Integer, Estudante> j : i.getValue().getAlunos().entrySet()){
-                    System.out.println(j.getValue().matricula + " :: " + j.getValue().nome);
+                    System.out.println(j.getValue().getMatricula() + " :: " + j.getValue().getNome());
                 }
 
                 break;
@@ -105,13 +105,13 @@ public class Testes {
 
         for (Disciplina i : disciplinas){
 
-            if(i.codigo.equals(codigo) && i.periodo.ano == ano && i.periodo.semestre.equals(semestre)) {
+            if(i.getCodigo().equals(codigo) && i.getPeriodo().getAno() == ano && i.getPeriodo().getSemestre().equals(semestre)) {
 
-                System.out.println("Atividades cadastradas em " + i.codigo + "-" + i.periodo.ano + "/" + i.periodo.semestre );
+                System.out.println("Atividades cadastradas em " + i.getCodigo() + "-" + i.getPeriodo().getAno() + "/" + i.getPeriodo().getSemestre() );
                 for( Map.Entry<Integer, Atividade> j : i.getAtividades().entrySet() ){
 
                     Atividade atividade = j.getValue();
-                    System.out.println(atividade.numero + " :: " +atividade.nome);
+                    System.out.println(atividade.getNumero() + " :: " +atividade.getNome());
 
                 }
 
@@ -140,13 +140,13 @@ public class Testes {
 
         for (Disciplina i : disciplinas){
 
-            if(i.codigo.equals(codigo) && i.periodo.ano == ano && i.periodo.semestre.equals(semestre)) {
+            if(i.getCodigo().equals(codigo) && i.getPeriodo().getAno() == ano && i.getPeriodo().getSemestre().equals(semestre)) {
 
 
                 Atividade j = i.getAtividades().get(numero);
                 
                 for(Map.Entry<Integer, Nota> k : j.getNotas().entrySet()){
-                    System.out.println("Aluno: " +  k.getValue().estudante.nome + " :: " + k.getValue().estudante.matricula + " nota: " + k.getValue().notaDoAluno);
+                    System.out.println("Aluno: " +  k.getValue().getEstudante().getNome() + " :: " + k.getValue().getEstudante().getMatricula() + " nota: " + k.getValue().getNotaDoAluno());
                 }
 
                 break;

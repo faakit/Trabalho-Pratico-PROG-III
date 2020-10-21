@@ -5,10 +5,10 @@ public class Disciplina implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    String codigo;
-    String nome;
-    Periodo periodo;
-    Docente professor;
+    private String codigo;
+    private String nome;
+    private Periodo periodo;
+    private Docente professor;
     private Map<Integer, Estudante> alunos;
     private Map<Integer, Atividade> atividades;
 
@@ -19,6 +19,10 @@ public class Disciplina implements Serializable {
         this.professor = professor;
         alunos = new HashMap<>();
         atividades = new HashMap<>();
+    }
+
+    public Docente getProfessor() {
+        return this.professor;
     }
 
     public Map<Integer, Estudante> getAlunos(){
@@ -52,6 +56,6 @@ public class Disciplina implements Serializable {
 
     @Override
     public String toString(){
-        return this.codigo + "-" + this.periodo.ano + "/" + this.periodo.semestre;
+        return this.codigo + "-" + this.periodo.getAno() + "/" + this.periodo.getSemestre();
     }
 }

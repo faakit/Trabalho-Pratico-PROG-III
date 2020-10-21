@@ -7,11 +7,11 @@ public class Atividade implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    String nome;
-    int numero;
+    private String nome;
+    private int numero;
     private Map<Integer, Nota> notas;
-    boolean sincrona;
-    double cargaHoraria;
+    private boolean sincrona;
+    private double cargaHoraria;
 
     public Atividade(int numero, String nome, boolean sincrona, double cargaHoraria){
         this.nome = nome;
@@ -23,6 +23,10 @@ public class Atividade implements Serializable {
 
     public String getNome(){
         return this.nome;
+    }
+    
+    public int getNumero() {
+        return this.numero;
     }
 
     public Map<Integer, Nota> getNotas(){
