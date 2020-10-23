@@ -1,8 +1,12 @@
+package src.menus;
+
 import java.util.Scanner;
 
 public class RelatoriosMenu {
-    Scanner scanner;
-    Designacoes memoria;
+    final Scanner scanner;
+    final Designacoes memoria;
+
+    final Verificador verificador = new Verificador();
 
     public RelatoriosMenu(Scanner scanner, Designacoes memoria){
         this.scanner = scanner;
@@ -24,7 +28,9 @@ public class RelatoriosMenu {
                 System.out.println("5 - Retornar ao menu anterior");
 
                 
-                escolha = scanner.nextInt();
+                String i = scanner.nextLine();
+
+                escolha = verificador.verificaInt(i);
 
                 switch (escolha) {
                     case 1:

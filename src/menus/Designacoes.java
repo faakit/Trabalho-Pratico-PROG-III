@@ -1,7 +1,11 @@
+package src.menus;
+
 import java.util.regex.Pattern;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import src.dominio.*;
 
 public class Designacoes {
     
@@ -11,12 +15,47 @@ public class Designacoes {
     private static final String DIGITANOME = "Digite o nome completo: ";
     private static final String DIGITALOGIN = "Digite o login institucional: ";
 
+    final Verificador verificador = new Verificador();
+
     Map<String, Periodo> periodos;
     Map<String, Docente> docentes;
     Map<Integer, Estudante> estudantes;
     Map<String, Disciplina> disciplinas;
 
     Scanner scanner;
+
+    /* Getters e Setters da memória (Utilizáveis apenas ao I/O) */
+    public void setDisciplinas(Map<String, Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
+
+    public void setPeriodos(Map<String, Periodo> periodos) {
+        this.periodos = periodos;
+    }
+
+    public void setDocentes(Map<String, Docente> docentes) {
+        this.docentes = docentes;
+    }
+
+    public void setEstudantes(Map<Integer, Estudante> estudantes) {
+        this.estudantes = estudantes;
+    }
+
+    public Map<String, Periodo> getPeriodos() {
+        return this.periodos;
+    }
+
+    public Map<String, Docente> getDocentes() {
+        return this.docentes;
+    }
+
+    public Map<String, Disciplina> getDisciplinas() {
+        return this.disciplinas;
+    }
+    
+    public Map<Integer, Estudante> getEstudantes() {
+        return this.estudantes;
+    }
 
     /* Construtor da classe */
     public Designacoes(Scanner scanner){
@@ -33,10 +72,22 @@ public class Designacoes {
         String nome;
         
         System.out.println(DIGITAMATRICULA);
-        matricula = scanner.nextInt();
+        String matriculaStr = scanner.nextLine();
+
+        try{
+            matricula = Integer.parseInt(matriculaStr);
+        }
+        catch(IllegalArgumentException e){
+            System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return;
+        }
+
+        if(estudantes.get(matricula) != null){
+            System.out.println("Cadastro repetido: " + matricula);
+            return;
+        }
 
         System.out.println(DIGITANOME);
-        scanner.nextLine();
         nome = scanner.nextLine();
 
         Estudante novoEstudante = new Estudante(matricula, nome);
@@ -48,7 +99,6 @@ public class Designacoes {
         String entrada;
 
         System.out.println(DIGITAPERIODO);
-        scanner.nextLine();
         entrada = scanner.nextLine();
 
         String[] split = entrada.split(Pattern.quote("/"));
@@ -57,6 +107,12 @@ public class Designacoes {
         String semestre = split[1].toUpperCase();
 
         Periodo periodo = new Periodo(ano, semestre);
+
+        if(periodos.get(periodo.toString( )) != null){
+            System.out.println("Cadastro repetido: " + periodo);
+            return;
+        }
+
         periodos.put(periodo.toString(), periodo);
 
     }
@@ -68,8 +124,12 @@ public class Designacoes {
         char escolha;
         
         System.out.println(DIGITALOGIN);
-        scanner.nextLine();
         login = scanner.nextLine();
+
+        if(docentes.get(login) != null){
+            System.out.println("Cadastro repetido: " + login);
+            return;
+        }
 
         System.out.println(DIGITANOME);
         nome = scanner.nextLine();
@@ -95,7 +155,6 @@ public class Designacoes {
         String nome;
 
         System.out.println(DIGITACODIGO);
-        scanner.nextLine();
         codigo = scanner.nextLine().toUpperCase();
         
         System.out.println("Digite o nome da disciplina: ");
@@ -104,10 +163,25 @@ public class Designacoes {
         System.out.println(DIGITAPERIODO);
         String strPeriodo = scanner.nextLine().toUpperCase();
 
+        if(disciplinas.get(codigo + "-" + strPeriodo) != null){
+            System.out.println("Cadastro repetido: " + codigo + "-" + strPeriodo);
+            return;
+        }
+ 
+        if (periodos.get(strPeriodo) == null){
+        System.out.println("Referência inválida: " + strPeriodo);
+        return;
+        }
+
         Periodo periodo = periodos.get(strPeriodo);
 
         System.out.println("Digite o login institucional do docente responsável: ");
         String strProfessor = scanner.nextLine();
+
+        if (docentes.get(strProfessor) == null){
+            System.out.println("Referência inválida: " + strProfessor);
+            return;
+        }
 
         Docente professor = docentes.get(strProfessor);
 
@@ -119,7 +193,21 @@ public class Designacoes {
 
     public void cadastraAlunoEmDisciplina(){
         System.out.println(DIGITAMATRICULA);
-        int matricula = scanner.nextInt();
+        String matriculaStr = scanner.nextLine();
+        int matricula;
+        
+        try{
+            matricula = Integer.parseInt(matriculaStr);
+        }
+        catch(IllegalArgumentException e){
+            System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return;
+        }
+
+        if (estudantes.get(matricula) == null){
+            System.out.println("Referência inválida: " + matricula);
+            return;
+        }
 
         System.out.println(DIGITACODIGO);
         scanner.nextLine();
@@ -127,6 +215,16 @@ public class Designacoes {
 
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine().toUpperCase();
+
+        if (disciplinas.get(codigo + "-" + periodo) == null){
+            System.out.println("Referência inválida: " + codigo + "-" + periodo);
+            return;
+        }
+
+        if (disciplinas.get(codigo + "-" + periodo).getAlunos().get(matricula) != null){
+            System.out.println("Matricula repetida: " + matricula + " em " + codigo + "-" + periodo);
+            return;
+        }
 
         disciplinas.get(codigo + "-" + periodo).getAlunos().put(matricula, estudantes.get(matricula));
         estudantes.get(matricula).addDisciplina(disciplinas.get(codigo + "-" + periodo));
@@ -134,11 +232,15 @@ public class Designacoes {
 
     public void cadastraAtividadeEmDisciplina(){
         System.out.println(DIGITACODIGO);
-        scanner.nextLine();
         String codigo = scanner.nextLine().toUpperCase();
 
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine().toUpperCase();
+
+        if (disciplinas.get(codigo + "-" + periodo) == null){
+            System.out.println("Referência inválida: " + codigo + "-" + periodo);
+            return;
+        }
 
         int i;
         do {
@@ -149,8 +251,9 @@ public class Designacoes {
             System.out.println("3 - Estudo ");
             System.out.println("4 - Aula ");
 
-            i = scanner.nextInt();
-            scanner.nextLine();
+            String escolha = scanner.nextLine();
+
+            i = verificador.verificaInt(escolha);
 
             switch (i){
                 case 1:
@@ -173,30 +276,72 @@ public class Designacoes {
 
     public void cadastraNotaEmAtividade(){
         System.out.println(DIGITACODIGO);
-        scanner.nextLine();
         String codigo = scanner.nextLine().toUpperCase();
 
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine().toUpperCase();
 
-        System.out.println("Digite o número da atividade: ");
-        int numero = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.println(DIGITAMATRICULA);
-        int matricula = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.println("Digite a nota do aluno: ");
-        double nota = scanner.nextDouble();
-        scanner.nextLine();
+        if (disciplinas.get(codigo + "-" + periodo) == null){
+            System.out.println("Referência inválida: " + codigo + "-" + periodo);
+            return;
+        }
 
         Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
+
+        System.out.println("Digite o número da atividade: ");
+        String numero = scanner.nextLine();
+
+        int nAtividade;
+        try{
+            nAtividade = Integer.parseInt(numero);
+        }
+        catch(IllegalArgumentException e){
+            System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return;
+        }
+
+        if (disciplina.getAtividades().get(nAtividade) == null){
+            System.out.println("Referência inválida a atividade de número: " + nAtividade);
+            return;
+        }
+
+        System.out.println(DIGITAMATRICULA);
+        String matriculaStr = scanner.nextLine();
+
+        int matricula;
+        try{
+            matricula = Integer.parseInt(matriculaStr);
+        }
+        catch(IllegalArgumentException e){
+            System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return;
+        }
+
+        if (estudantes.get(matricula) == null){
+            System.out.println("Referência inválida: " + matricula);
+            return;
+        }
+
+        if ( disciplina.getAtividades().get(nAtividade).getNotas().get(matricula) != null ){
+            System.out.println("Avaliação repetida: estudante " + matricula + " para atividade " + nAtividade + " de " + disciplina);
+        }
+
+        System.out.println("Digite a nota do aluno: ");
+        double nota;
+        try{
+            nota = scanner.nextDouble();
+            scanner.nextLine();
+        }
+        catch(IllegalArgumentException e){
+            System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return;
+        }
+
         Nota novaNota = new Nota(estudantes.get(matricula), nota);
         estudantes.get(matricula).incrementaAvaliacoes();
         estudantes.get(matricula).incrementaTotalAvaliacoes(nota);
 
-        disciplina.getAtividades().get(numero).addNotas(novaNota.getMatricula() ,novaNota);
+        disciplina.getAtividades().get(nAtividade).addNotas(novaNota.getMatricula() ,novaNota);
     }
 
     /* Funções criadoras de subtipos de atividades  */
@@ -207,8 +352,15 @@ public class Designacoes {
         System.out.println("Digite a data e horário da prova [dd-MM-yyyy HH:mm]: ");
         String strData = scanner.nextLine();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        LocalDateTime data = LocalDateTime.parse(strData, formatter);
+        LocalDateTime data;
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            data = LocalDateTime.parse(strData, formatter);
+        }
+        catch(Exception e){
+            System.out.println("Dado invalido: " + e);
+            return;
+        }
 
         System.out.println("Digite o conteudo da prova: ");
         String conteudo = scanner.nextLine();
@@ -225,16 +377,30 @@ public class Designacoes {
         System.out.println("Digite o prazo final [dd-MM-yyyy HH:mm]: ");
         String strData = scanner.nextLine();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        LocalDateTime data = LocalDateTime.parse(strData, formatter);
+        LocalDateTime data;
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            data = LocalDateTime.parse(strData, formatter);
+        }
+        catch(Exception e){
+            System.out.println("Dado invalido: " + e);
+            return;
+        }
 
         System.out.println("Numero maximo de alunos por grupo: ");
         int nAlunos = scanner.nextInt();
         scanner.nextLine();
 
         System.out.println("Carga horária esperada: ");
-        double cargaHoraria = scanner.nextDouble();
-        scanner.nextLine();
+        double cargaHoraria;
+        try{
+            cargaHoraria = scanner.nextDouble();
+            scanner.nextLine();
+        }
+        catch(IllegalArgumentException e){
+            System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return;
+        }
 
         Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
         Atividade atividade = new Trabalho(disciplina.getAtividades().size() + 1, nome, data, nAlunos, cargaHoraria);
@@ -273,8 +439,15 @@ public class Designacoes {
         System.out.println("Digite a data e horário da aula [dd-MM-yyyy HH:mm]: ");
         String strData = scanner.nextLine();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        LocalDateTime data = LocalDateTime.parse(strData, formatter);
+        LocalDateTime data;
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            data = LocalDateTime.parse(strData, formatter);
+        }
+        catch(Exception e){
+            System.out.println("Dado invalido: " + e);
+            return;
+        }
 
         Disciplina disciplina = disciplinas.get(codigo + "-" + periodo);
         Atividade atividade = new Aula(disciplina.getAtividades().size() + 1, nome, data);
@@ -287,23 +460,23 @@ public class Designacoes {
         scanner.nextLine();
         String entrada = scanner.nextLine().toUpperCase();
 
+        if (periodos.get(entrada) == null){
+            System.out.println("Referência inválida: " + entrada);
+            return;
+        }
+
         List<Disciplina> listaOrdenada = new ArrayList<>();
 
-        System.out.println("Períodos cadastrados: ");
+        System.out.println("Disciplinas cadastradas: ");
 
         /* Pega as disciplinas no período informado e coloca em uma lista */
-        for(Map.Entry<String, Periodo> i : periodos.entrySet()){
+        
+        for(Map.Entry<String, Disciplina> j : disciplinas.entrySet()){
 
-            if(i.getValue().toString().equals(entrada)){
+            if (j.getValue().getPeriodo().toString().equals(entrada)) listaOrdenada.add(j.getValue());
 
-                for(Map.Entry<String, Disciplina> j : disciplinas.entrySet()){
-
-                    listaOrdenada.add(j.getValue());
-
-                }
-                break;
-            }
         }
+    
 
         /* Ordena a lista em ordem crescente de nome da disciplina */
         Collections.sort(listaOrdenada, (d1, d2) ->   d1.getNome().compareTo(d2.getNome()));
@@ -430,6 +603,11 @@ public class Designacoes {
         scanner.nextLine();
         System.out.println("Digite o login de um docente: ");
         String login = scanner.nextLine();
+
+        if (docentes.get(login) == null){
+            System.out.println("Referência inválida: " + login);
+            return;
+        }
 
         Docente professor = docentes.get(login);
         List<Disciplina> listaOrdenada = new ArrayList<>();

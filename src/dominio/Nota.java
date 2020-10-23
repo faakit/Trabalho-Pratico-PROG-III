@@ -1,3 +1,5 @@
+package src.dominio;
+
 import java.io.Serializable;
 
 public class Nota implements Serializable {

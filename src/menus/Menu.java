@@ -1,12 +1,17 @@
+package src.menus;
+
 import java.util.*;
+
+import src.io.*;
 
 public class Menu {
     public static void main(String[] args) throws Exception {
         Locale.setDefault(new Locale("pt", "BR"));
 
-        Scanner scanner = new Scanner(System.in);
-        Designacoes designacoes = new Designacoes(scanner);
-        LeitorEscritor leitorEscritor = new LeitorEscritor(designacoes);
+        final Scanner scanner = new Scanner(System.in);
+        final Designacoes designacoes = new Designacoes(scanner);
+        final LeitorEscritor leitorEscritor = new LeitorEscritor(designacoes);
+        final Verificador verificador = new Verificador();
 
         int escolha;
 
@@ -29,12 +34,21 @@ public class Menu {
             System.out.println("9 - Salvar em disco");
             System.out.println("10 - Carregar do disco");
 
+            String escolhaString = scanner.nextLine();
             
-            escolha = scanner.nextInt();
+            escolha = verificador.verificaInt(escolhaString);
 
             switch (escolha) {
                 case 1:
-                    designacoes.cadastraPeriodo();
+                    try{
+                        designacoes.cadastraPeriodo();
+                    }
+                    catch(IllegalArgumentException e){
+                        System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+                    }
+                    catch(ArrayIndexOutOfBoundsException e){            //Acontece ao digitar "0" no período
+                        System.out.println("Não foi possível registrar o período.");
+                    }
                     break;
                 case 2:
                     designacoes.cadastraDocente();
@@ -43,7 +57,12 @@ public class Menu {
                     designacoes.cadastraDisciplina();
                     break;
                 case 4:
-                    designacoes.cadastraEstudante();
+                    try{
+                        designacoes.cadastraEstudante();
+                    }
+                    catch(InputMismatchException e){
+                        System.out.println("Dado inválido, dado digitado não é um número");
+                    }
                     break;
                 case 5:
                     designacoes.cadastraAlunoEmDisciplina();

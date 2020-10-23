@@ -1,3 +1,5 @@
+package src.dominio;
+
 import java.util.HashMap;
 import java.util.Map;
 

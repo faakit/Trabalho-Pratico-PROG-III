@@ -1,5 +1,9 @@
+package src.menus;
+
 import java.util.*;
 import java.util.regex.Pattern;
+
+import src.dominio.*;
 
 public class Testes {
 

@@ -1,3 +1,5 @@
+package src.dominio;
+
 import java.io.Serializable;
 
 public class Periodo implements Serializable {

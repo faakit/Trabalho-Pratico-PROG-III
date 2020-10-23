@@ -1,3 +1,5 @@
+package src.dominio;
+
 import java.time.LocalDateTime;
 
 public class Aula extends Atividade {
