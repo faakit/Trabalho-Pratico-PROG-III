@@ -13,14 +13,26 @@ public class Disciplina implements Serializable {
     private Docente professor;
     private Map<Integer, Estudante> alunos;
     private Map<Integer, Atividade> atividades;
+    private int nAtvSincronas;
+    private double cargaHoraria;
 
     public Disciplina(String codigo, String nome, Periodo periodo, Docente professor){
         this.codigo = codigo;
         this.nome = nome;
         this.periodo = periodo;
         this.professor = professor;
+        this.nAtvSincronas = 0;
+        this.cargaHoraria = 0;
         alunos = new HashMap<>();
         atividades = new HashMap<>();
+    }
+
+    public double getCargaHoraria() {
+        return cargaHoraria;
+    }
+
+    public int getnAtvSincronas() {
+        return nAtvSincronas;
     }
 
     public Docente getProfessor() {
@@ -54,6 +66,8 @@ public class Disciplina implements Serializable {
 
     public void addAtividades(int numero, Atividade atividade){
         this.atividades.put(numero, atividade);
+        if(atividade.isSincrona()) this.nAtvSincronas++;
+        this.cargaHoraria += atividade.getCargaHoraria();
     }
 
     @Override

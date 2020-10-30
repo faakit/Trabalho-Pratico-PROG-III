@@ -106,6 +106,11 @@ public class Designacoes {
         int ano = Integer.parseInt(split[0]);
         String semestre = split[1].toUpperCase();
 
+        if(semestre.length() != 1){
+            System.out.println("Dado Inválido: (semestre) " + semestre);
+            return;
+        }
+
         Periodo periodo = new Periodo(ano, semestre);
 
         if(periodos.get(periodo.toString( )) != null){
@@ -163,6 +168,15 @@ public class Designacoes {
         System.out.println(DIGITAPERIODO);
         String strPeriodo = scanner.nextLine().toUpperCase();
 
+        String[] split = strPeriodo.split(Pattern.quote("/"));
+
+        String semestre = split[1].toUpperCase();
+
+        if(semestre.length() != 1){
+            System.out.println("Dado Inválido: (semestre) " + semestre);
+            return;
+        }
+
         if(disciplinas.get(codigo + "-" + strPeriodo) != null){
             System.out.println("Cadastro repetido: " + codigo + "-" + strPeriodo);
             return;
@@ -216,6 +230,15 @@ public class Designacoes {
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine().toUpperCase();
 
+        String[] split = periodo.split(Pattern.quote("/"));
+
+        String semestre = split[1].toUpperCase();
+
+        if(semestre.length() != 1){
+            System.out.println("Dado Inválido: (semestre) " + semestre);
+            return;
+        }
+
         if (disciplinas.get(codigo + "-" + periodo) == null){
             System.out.println("Referência inválida: " + codigo + "-" + periodo);
             return;
@@ -236,6 +259,15 @@ public class Designacoes {
 
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine().toUpperCase();
+
+        String[] split = periodo.split(Pattern.quote("/"));
+
+        String semestre = split[1].toUpperCase();
+
+        if(semestre.length() != 1){
+            System.out.println("Dado Inválido: (semestre) " + semestre);
+            return;
+        }
 
         if (disciplinas.get(codigo + "-" + periodo) == null){
             System.out.println("Referência inválida: " + codigo + "-" + periodo);
@@ -280,6 +312,15 @@ public class Designacoes {
 
         System.out.println(DIGITAPERIODO);
         String periodo = scanner.nextLine().toUpperCase();
+
+        String[] split = periodo.split(Pattern.quote("/"));
+
+        String semestre = split[1].toUpperCase();
+
+        if(semestre.length() != 1){
+            System.out.println("Dado Inválido: (semestre) " + semestre);
+            return;
+        }
 
         if (disciplinas.get(codigo + "-" + periodo) == null){
             System.out.println("Referência inválida: " + codigo + "-" + periodo);
@@ -460,6 +501,15 @@ public class Designacoes {
         scanner.nextLine();
         String entrada = scanner.nextLine().toUpperCase();
 
+        String[] split = entrada.split(Pattern.quote("/"));
+
+        String semestre = split[1].toUpperCase();
+
+        if(semestre.length() != 1){
+            System.out.println("Dado Inválido: (semestre) " + semestre);
+            return;
+        }
+
         if (periodos.get(entrada) == null){
             System.out.println("Referência inválida: " + entrada);
             return;
@@ -612,6 +662,7 @@ public class Designacoes {
         Docente professor = docentes.get(login);
         List<Disciplina> listaOrdenada = new ArrayList<>();
 
+        /* Cria e ordena lista de disciplinas */
 		for(Disciplina i : professor.getDisciplinas()){
             listaOrdenada.add(i);
         }
@@ -623,17 +674,11 @@ public class Designacoes {
         });
 
         for (Disciplina i : listaOrdenada){
-            double nAtvSincronas = 0;
-            double cargaHorariaTotal = 0;
             List<Atividade> atividadesOrdenada = new ArrayList<>();
 
+            /* Cria e ordena a lista de atividades */
             for(Map.Entry<Integer, Atividade> j : i.getAtividades().entrySet()){
-
                 atividadesOrdenada.add(j.getValue());
-
-                if (j.getValue().isSincrona()) nAtvSincronas++;
-                cargaHorariaTotal += j.getValue().getCargaHoraria();
-
             }
 
             Collections.sort(atividadesOrdenada, (d1, d2) -> {
@@ -645,14 +690,14 @@ public class Designacoes {
                 return d1.getNome().compareTo(d2.getNome()) ;
             });
 
-            double porcentagemSincXAssinc = 100 * nAtvSincronas/(i.getAtividades().size());
+            double porcentagemSincXAssinc = 100 * (double)i.getnAtvSincronas()/(i.getAtividades().size());
 
             System.out.println("Período acadêmico: " + i.getPeriodo());
             System.out.println("Código: " + i.getCodigo());
             System.out.println("Nome: " + i.getNome());
             System.out.println("Número de atividades propostas: " + i.getAtividades().size());
             System.out.println("Porcentagem de atividades síncronas: " + porcentagemSincXAssinc + "%");
-            System.out.println("Carga horaria total: " + cargaHorariaTotal);
+            System.out.println("Carga horaria total: " + i.getCargaHoraria());
 
             for(Atividade j : atividadesOrdenada){
                 System.out.println("Nome da atividade: " + j.getNome());
