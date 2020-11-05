@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import src.dominio.*;
+import src.io.Designacoes;
 
 public class Testes {
 
@@ -20,7 +21,7 @@ public class Testes {
     public static void verificaPeriodos(Designacoes designacoes){
 
         System.out.println("Períodos cadastrados: ");
-        for(Map.Entry<String, Periodo> i : designacoes.periodos.entrySet()){
+        for(Map.Entry<String, Periodo> i : designacoes.getPeriodos().entrySet()) {
 
             System.out.println(i.getValue());
 

@@ -2,6 +2,8 @@ package src.menus;
 
 import java.util.Scanner;
 
+import src.io.Designacoes;
+
 public class RelatoriosMenu {
     final Scanner scanner;
     final Designacoes memoria;

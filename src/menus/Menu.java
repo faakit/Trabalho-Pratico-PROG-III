@@ -87,16 +87,16 @@ public class Menu {
                     Testes.verificaPeriodos(designacoes);
                     break;
                 case 22:
-                    Testes.verificaDocentes(designacoes.docentes);
+                    Testes.verificaDocentes(designacoes.getDocentes());
                     break;
                 case 33:
-                    Testes.verificaDisciplinas(designacoes.disciplinas);
+                    Testes.verificaDisciplinas(designacoes.getDisciplinas());
                     break;
                 case 44:
-                    Testes.verificaEstudantes(designacoes.estudantes);
+                    Testes.verificaEstudantes(designacoes.getEstudantes());
                     break;
                 case 55:
-                    Testes.verificaAlunosEmDisciplina(designacoes.disciplinas, scanner);
+                    Testes.verificaAlunosEmDisciplina(designacoes.getDisciplinas(), scanner);
                     break;
                 default:
                 

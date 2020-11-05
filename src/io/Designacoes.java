@@ -1,4 +1,4 @@
-package src.menus;
+package src.io;
 
 import java.util.regex.Pattern;
 import java.time.LocalDateTime;
@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import src.dominio.*;
+import src.menus.Verificador;
 
 public class Designacoes {
     

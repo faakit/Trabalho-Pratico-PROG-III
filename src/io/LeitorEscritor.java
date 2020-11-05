@@ -3,7 +3,6 @@ package src.io;
 import java.io.*;
 import java.util.Map;
 
-import src.menus.*;
 import src.dominio.*;
 
 @SuppressWarnings("unchecked")   //Para ignorar os avisos sobre o cast de objeto para os mapas
