@@ -13,6 +13,9 @@ public class Menu {
         final LeitorEscritor leitorEscritor = new LeitorEscritor(designacoes);
         final Verificador verificador = new Verificador();
 
+        final Argumentos argumentos = new Argumentos(designacoes, args);
+        argumentos.checaArgumentos();
+
         int escolha;
 
         do{
