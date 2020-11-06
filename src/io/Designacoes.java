@@ -1,6 +1,7 @@
 package src.io;
 
 import java.util.regex.Pattern;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -20,7 +21,7 @@ public class Designacoes {
 
     Map<String, Periodo> periodos;
     Map<String, Docente> docentes;
-    Map<Integer, Estudante> estudantes;
+    Map<BigInteger, Estudante> estudantes;
     Map<String, Disciplina> disciplinas;
 
     Scanner scanner;
@@ -38,7 +39,7 @@ public class Designacoes {
         this.docentes = docentes;
     }
 
-    public void setEstudantes(Map<Integer, Estudante> estudantes) {
+    public void setEstudantes(Map<BigInteger, Estudante> estudantes) {
         this.estudantes = estudantes;
     }
 
@@ -54,7 +55,7 @@ public class Designacoes {
         return this.disciplinas;
     }
     
-    public Map<Integer, Estudante> getEstudantes() {
+    public Map<BigInteger, Estudante> getEstudantes() {
         return this.estudantes;
     }
 
@@ -69,14 +70,14 @@ public class Designacoes {
 
     /* Funções de cadastro */
     public void cadastraEstudante(){
-        int matricula;
+        BigInteger matricula;
         String nome;
         
         System.out.println(DIGITAMATRICULA);
         String matriculaStr = scanner.nextLine();
 
         try{
-            matricula = Integer.parseInt(matriculaStr);
+            matricula = new BigInteger(matriculaStr);
         }
         catch(IllegalArgumentException e){
             System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
@@ -209,10 +210,10 @@ public class Designacoes {
     public void cadastraAlunoEmDisciplina(){
         System.out.println(DIGITAMATRICULA);
         String matriculaStr = scanner.nextLine();
-        int matricula;
+        BigInteger matricula;
         
         try{
-            matricula = Integer.parseInt(matriculaStr);
+            matricula = new BigInteger(matriculaStr);
         }
         catch(IllegalArgumentException e){
             System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
@@ -350,9 +351,9 @@ public class Designacoes {
         System.out.println(DIGITAMATRICULA);
         String matriculaStr = scanner.nextLine();
 
-        int matricula;
+        BigInteger matricula;
         try{
-            matricula = Integer.parseInt(matriculaStr);
+            matricula = new BigInteger(matriculaStr);
         }
         catch(IllegalArgumentException e){
             System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
@@ -577,7 +578,7 @@ public class Designacoes {
                         else atvAssincronas++;
 
                         nNotas = k.getValue().getNotas().size();
-                        for(Map.Entry<Integer, Nota> l : k.getValue().getNotas().entrySet()){
+                        for(Map.Entry<BigInteger, Nota> l : k.getValue().getNotas().entrySet()){
                             totalNotas += l.getValue().getNotaDoAluno();
                         }
                     }
@@ -614,7 +615,7 @@ public class Designacoes {
     public void estatisticaEstudante(){
         List<Estudante> listaOrdenada = new ArrayList<>();
 
-        for(Map.Entry<Integer, Estudante> i : estudantes.entrySet()){
+        for(Map.Entry<BigInteger, Estudante> i : estudantes.entrySet()){
 
             listaOrdenada.add(i.getValue());
 
@@ -639,7 +640,7 @@ public class Designacoes {
 
             }
 
-            System.out.println("Matricula: " + i.getMatricula());
+            System.out.println("Matricula: " + i.verMatricula());
             System.out.println("Nome: " + i.getNome());
             System.out.println("Media de disciplinas por período: " + nDisciplinas/periodos.size());
             if (nDisciplinas!=0) System.out.println("Media de avaliações por disciplina: " + i.getNAvaliacoes()/nDisciplinas );

@@ -1,6 +1,7 @@
 package src.dominio;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.*;
 
 public class Disciplina implements Serializable {
@@ -11,7 +12,7 @@ public class Disciplina implements Serializable {
     private String nome;
     private Periodo periodo;
     private Docente professor;
-    private Map<Integer, Estudante> alunos;
+    private Map<BigInteger, Estudante> alunos;
     private Map<Integer, Atividade> atividades;
     private int nAtvSincronas;
     private double cargaHoraria;
@@ -39,11 +40,11 @@ public class Disciplina implements Serializable {
         return this.professor;
     }
 
-    public Map<Integer, Estudante> getAlunos(){
+    public Map<BigInteger, Estudante> getAlunos(){
         return this.alunos;
     }
 
-    public void addAlunos(int matricula, Estudante estudante){
+    public void addAlunos(BigInteger matricula, Estudante estudante){
         this.alunos.put(matricula, estudante);
     }
 

@@ -1,6 +1,7 @@
 package src.io;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.util.Map;
 
 import src.dominio.*;
@@ -32,7 +33,7 @@ public class LeitorEscritor {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("objs.dat"));) {
             this.memoria.setDisciplinas((Map<String, Disciplina>) in.readObject());
             this.memoria.setDocentes((Map<String, Docente>) in.readObject());
-            this.memoria.setEstudantes((Map<Integer, Estudante>) in.readObject());
+            this.memoria.setEstudantes((Map<BigInteger, Estudante>) in.readObject());
             this.memoria.setPeriodos((Map<String, Periodo>) in.readObject());
         } catch (Exception e){
             System.out.println("Erro de I/O");

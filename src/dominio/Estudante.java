@@ -1,6 +1,7 @@
 package src.dominio;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +11,11 @@ public class Estudante implements Serializable  {
         
         private int nAvaliacoes;
         private double totalAvaliacoes;
-        private int matricula;
+        private BigInteger matricula;
         private String nome;
         private List<Disciplina> disciplinas;
 
-        public Estudante(int matricula, String nome){
+        public Estudante(BigInteger matricula, String nome){
                 this.matricula = matricula;
                 this.nome = nome;
                 this.disciplinas = new ArrayList<>();
@@ -46,7 +47,7 @@ public class Estudante implements Serializable  {
                 return this.nAvaliacoes;
         }
 
-        public int getMatricula(){
+        public BigInteger verMatricula(){
                 return this.matricula;
         }
 

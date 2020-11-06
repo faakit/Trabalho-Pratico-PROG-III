@@ -1,5 +1,6 @@
 package src.menus;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -54,12 +55,12 @@ public class Testes {
 
     }
 
-    public static void verificaEstudantes(Map<Integer, Estudante> estudantes){
+    public static void verificaEstudantes(Map<BigInteger, Estudante> estudantes){
 
         System.out.println("Estudantes cadastrados:");
-        for(Map.Entry<Integer, Estudante> i : estudantes.entrySet()){
+        for(Map.Entry<BigInteger, Estudante> i : estudantes.entrySet()){
             Estudante aluno = i.getValue();
-            System.out.println(aluno.getNome() + " :: " + aluno.getMatricula());
+            System.out.println(aluno.getNome() + " :: " + aluno.verMatricula());
         }
         pressionaEnter();
 
@@ -68,7 +69,6 @@ public class Testes {
     public static void verificaAlunosEmDisciplina(Map<String, Disciplina> disciplinas, Scanner scanner){
         
         System.out.println("Digite o codigo da disciplina: ");
-        scanner.nextLine();
         String codigo = scanner.nextLine().toUpperCase();
 
         System.out.println("Digite o periodo [Ano/Semestre]: ");
@@ -83,8 +83,8 @@ public class Testes {
             if(i.getValue().getCodigo().equals(codigo) && i.getValue().getPeriodo().getAno() == ano && i.getValue().getPeriodo().getSemestre().equals(semestre)) {
 
                 System.out.println("Estudantes cadastrados em " + i.getValue().getCodigo() + "-" + i.getValue().getPeriodo().getAno() + "/" + i.getValue().getPeriodo().getSemestre());
-                for(Map.Entry<Integer, Estudante> j : i.getValue().getAlunos().entrySet()){
-                    System.out.println(j.getValue().getMatricula() + " :: " + j.getValue().getNome());
+                for(Map.Entry<BigInteger, Estudante> j : i.getValue().getAlunos().entrySet()){
+                    System.out.println(j.getValue().verMatricula() + " :: " + j.getValue().getNome());
                 }
 
                 break;
@@ -150,8 +150,8 @@ public class Testes {
 
                 Atividade j = i.getAtividades().get(numero);
                 
-                for(Map.Entry<Integer, Nota> k : j.getNotas().entrySet()){
-                    System.out.println("Aluno: " +  k.getValue().getEstudante().getNome() + " :: " + k.getValue().getEstudante().getMatricula() + " nota: " + k.getValue().getNotaDoAluno());
+                for(Map.Entry<BigInteger, Nota> k : j.getNotas().entrySet()){
+                    System.out.println("Aluno: " +  k.getValue().getEstudante().getNome() + " :: " + k.getValue().getEstudante().verMatricula() + " nota: " + k.getValue().getNotaDoAluno());
                 }
 
                 break;

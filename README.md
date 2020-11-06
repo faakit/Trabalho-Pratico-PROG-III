@@ -6,8 +6,8 @@ Aluno: André Altoé Santiago
 Para compilar e rodar a aplicação basta:
 
 - abrir um Shell/Prompt de comando na pasta com os arquivos
-- executar o comando "javac Menu.java"
-- executar o comando "java Menu"
+- executar o comando "javac src\menus\Main.java"
+- executar o comando "java src/menus/Main"
 
 To do:
 - Parte 4

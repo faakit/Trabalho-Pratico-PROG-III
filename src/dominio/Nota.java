@@ -1,6 +1,7 @@
 package src.dominio;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 public class Nota implements Serializable {
 
@@ -22,7 +23,7 @@ public class Nota implements Serializable {
         return this.notaDoAluno;
     }
 
-    public int getMatricula(){
-        return this.estudante.getMatricula();
+    public BigInteger getMatricula(){
+        return this.estudante.verMatricula();
     }
 }

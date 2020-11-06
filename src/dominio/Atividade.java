@@ -1,6 +1,7 @@
 package src.dominio;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ public class Atividade implements Serializable {
     
     private String nome;
     private int numero;
-    private Map<Integer, Nota> notas;
+    private Map<BigInteger, Nota> notas;
     private boolean sincrona;
     private double cargaHoraria;
 
@@ -31,11 +32,11 @@ public class Atividade implements Serializable {
         return this.numero;
     }
 
-    public Map<Integer, Nota> getNotas(){
+    public Map<BigInteger, Nota> getNotas(){
         return this.notas;
     }
 
-    public void addNotas(int matricula, Nota nota){
+    public void addNotas(BigInteger matricula, Nota nota){
         this.notas.put(matricula, nota);
     }
 
