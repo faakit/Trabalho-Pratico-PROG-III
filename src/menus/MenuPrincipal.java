@@ -2,19 +2,23 @@ package src.menus;
 
 import java.util.*;
 
-import src.io.*;
+import src.io.Designacoes;
+import src.io.LeitorEscritor;
 
-public class Menu {
-    public static void main(String[] args) throws Exception {
-        Locale.setDefault(new Locale("pt", "BR"));
+public class MenuPrincipal {
+    private Scanner scanner;
 
-        final Scanner scanner = new Scanner(System.in);
-        final Designacoes designacoes = new Designacoes(scanner);
-        final LeitorEscritor leitorEscritor = new LeitorEscritor(designacoes);
-        final Verificador verificador = new Verificador();
+    final Designacoes designacoes;
+    final Verificador verificador = new Verificador();
+    final LeitorEscritor leitorEscritor;
 
-        final Argumentos argumentos = new Argumentos(designacoes, args);
-        argumentos.checaArgumentos();
+    public MenuPrincipal (Scanner scanner, Designacoes designacoes){
+        this.designacoes = designacoes;
+        this.scanner = scanner;
+        this.leitorEscritor = new LeitorEscritor(designacoes);
+    }
+    
+    public void menu() throws Exception {
 
         int escolha;
 
@@ -36,11 +40,11 @@ public class Menu {
             System.out.println("8 - Relatorios");
             System.out.println("9 - Salvar em disco");
             System.out.println("10 - Carregar do disco");
-
+    
             String escolhaString = scanner.nextLine();
             
             escolha = verificador.verificaInt(escolhaString);
-
+    
             switch (escolha) {
                 case 1:
                     try{
@@ -102,11 +106,9 @@ public class Menu {
                     Testes.verificaAlunosEmDisciplina(designacoes.getDisciplinas(), scanner);
                     break;
                 default:
-                
-                    
+            
             }
-        }while(escolha !=0 );
+        }while(escolha !=0 ); 
 
-        scanner.close();
-    }
+    }    
 }

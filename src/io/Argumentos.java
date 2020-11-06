@@ -2,6 +2,7 @@ package src.io;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -10,23 +11,25 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 
 import src.dominio.*;
+import src.menus.MenuPrincipal;
 
 public class Argumentos {
     private Designacoes memoria;
     private String[] args;
+    private Scanner scanner;
 
     private final CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
 
-    public Argumentos(Designacoes designacoes, String[] args) {
+    public Argumentos(Designacoes designacoes, String[] args, Scanner scanner) {
         this.memoria = designacoes;
         this.args = args;
+        this.scanner = scanner;
     }
 
     public void checaArgumentos() {
         int index = 0;
 
         for (String i : args) {
-            System.out.println(i);
             index++;
 
             switch (i) {
@@ -48,6 +51,14 @@ public class Argumentos {
                 case "--read-only":
                     break;
                 case "--write-only":
+                    break;
+                case "-menu":
+                    MenuPrincipal menu = new MenuPrincipal(scanner, memoria);
+                    try {
+                        menu.menu();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     break;
                 default:
                     break;
