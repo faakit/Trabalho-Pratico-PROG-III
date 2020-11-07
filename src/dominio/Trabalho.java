@@ -1,6 +1,7 @@
 package src.dominio;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Trabalho extends Atividade {
 
@@ -20,7 +21,8 @@ public class Trabalho extends Atividade {
     }
 
     @Override
-    public LocalDateTime getData(){
-        return this.prazo;
+    public String getData(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return this.prazo.format(formatter);
     }
 }

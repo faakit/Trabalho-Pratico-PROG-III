@@ -2,14 +2,13 @@ package src.dominio;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Atividade implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String nome;
     private int numero;
     private Map<BigInteger, Nota> notas;
@@ -44,7 +43,7 @@ public class Atividade implements Serializable {
         return this.sincrona;
     }
 
-    public LocalDateTime getData(){
+    public String getData(){
         return null;
     }
 

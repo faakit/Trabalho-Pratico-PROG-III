@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -74,6 +75,12 @@ public class Argumentos {
                     break;
                 case "--write-only":
                     break;
+                case "-teste":
+                    visaoGeralPeriodo();
+                    estatisticaDocentes();
+                    estatisticaEstudante();
+                    estatisticaDisciplinasDocente();
+                    break;
                 case "-menu":
                     MenuPrincipal menu = new MenuPrincipal(scanner, memoria);
                     try {
@@ -91,7 +98,7 @@ public class Argumentos {
     }
 
     private void argP(String filename) {
-        /* ARMAZENA PERÍODOS */
+        /* ARMAZENA PERIODOS */
         try (FileReader fileReader = new FileReader(filename);
                 CSVReader reader = new CSVReaderBuilder(fileReader).withCSVParser(parser).build();) {
 
@@ -252,7 +259,6 @@ public class Argumentos {
         } catch (IOException | CsvValidationException e) {
             System.out.println("ERRO DE I/O");
         }
-
     }
 
     private void argM(String filename){
@@ -279,9 +285,6 @@ public class Argumentos {
                 String periodo = codigo.split(Pattern.quote("-"))[1];
                 String semestre = periodo.split(Pattern.quote("/"))[1];
                 codigo = codigo.split(Pattern.quote("-"))[0];
-
-                System.out.println(codigo);
-                System.out.println(periodo);
 
                 if(semestre.length() != 1){
                     System.out.println("Dado Inválido: (semestre) " + semestre);
@@ -321,8 +324,6 @@ public class Argumentos {
             reader.readNext();
 
             while ((linhas = reader.readNext()) != null) {
-            
-                linhas = linhas[0].split(Pattern.quote(";"));
 
                 String codigo = linhas[0].split(Pattern.quote("-"))[0];
                 String periodo = linhas[0].split(Pattern.quote("-"))[1];
@@ -349,7 +350,7 @@ public class Argumentos {
 
                     LocalDateTime data;
                     
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                     data = LocalDateTime.parse(dataStr, formatter);
                     
                     Disciplina disciplina = memoria.disciplinas.get(codigo + "-" + periodo);
@@ -363,7 +364,7 @@ public class Argumentos {
 
                     LocalDateTime data;
                     
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                     data = LocalDateTime.parse(dataStr, formatter);
 
                     String strNAlunos = linhas[6];
@@ -382,7 +383,7 @@ public class Argumentos {
 
                     LocalDateTime data;
                     
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                     data = LocalDateTime.parse(dataStr, formatter);
 
                     String conteudo = linhas[5];
@@ -434,7 +435,6 @@ public class Argumentos {
 
             while ((linhas = reader.readNext()) != null) {
                
-                linhas = linhas[0].split(Pattern.quote(";"));
                 String codigo = linhas[0].split(Pattern.quote("-"))[0];
                 String periodo = linhas[0].split(Pattern.quote("-"))[1].toUpperCase();
                 String semestre = periodo.split(Pattern.quote("/"))[1];
@@ -445,7 +445,8 @@ public class Argumentos {
                 String numero = linhas[2];
                 int nAtividade = Integer.parseInt(numero);
 
-                String notaStr = linhas[3];
+
+                String notaStr = linhas[3].replace(",", "."); 
                 double nota = Double.parseDouble(notaStr);
 
                 if(semestre.length() != 1){
@@ -499,7 +500,7 @@ public class Argumentos {
                                             com.opencsv.ICSVWriter.DEFAULT_LINE_END);){
             
             /* Adiciona cabeçalho */
-            String[] linhas = { "Período", "código", "Disciplina", "Disciplina", "Docente Responsável", "E-mail Docente","Qtd. Estudantes", "Qtd. Atividades" };
+            String[] linhas = { "Período", "Código Disciplina", "Disciplina", "Docente Responsável", "E-mail Docente","Qtd. Estudantes", "Qtd. Atividades" };
             writer.writeNext(linhas);
             
             /* Cria lista de periodos para ordenar */
@@ -517,8 +518,6 @@ public class Argumentos {
 
             for(Periodo entrada : periodosOrdenados){
                 List<Disciplina> listaOrdenada = new ArrayList<>();
-
-                System.out.println("Disciplinas cadastradas: ");
 
                 /* Pega as disciplinas no período informado e coloca em uma lista */
                 
@@ -619,14 +618,14 @@ public class Argumentos {
                 linhas[0] = i.getNome();
                 linhas[1] = Integer.toString(numeroDisciplinas);
                 linhas[2] = Integer.toString(periodos.size());
-                linhas[3] = Double.toString(mediaAtivXDisciplina);
-                linhas[4] = String.format("%.0f", Double.toString(percentualSincXAssinc));
-                if(percentualSincXAssinc == 0){
-                    linhas[5] = "0";
+                linhas[3] = String.format("%.1f", mediaAtivXDisciplina);
+                linhas[4] = String.format("%.0f", percentualSincXAssinc);
+                if(numeroAtividades == 0){
+                    linhas[5] = String.valueOf(0);
                 } else{
-                    linhas[5] = String.format("%.0f", Double.toString(100 - percentualSincXAssinc));
+                    linhas[5] = String.format("%.0f", (100 - percentualSincXAssinc));
                 }
-                linhas[6] =  String.format("%.1f" , Double.toString(mediaNotas));
+                linhas[6] =  String.format("%.1f" , mediaNotas);
                 writer.writeNext(linhas);
 
             }
@@ -639,7 +638,7 @@ public class Argumentos {
 
     public void estatisticaEstudante(){
 
-        File file = new File("relatorios/.csv");
+        File file = new File("relatorios/3-estudantes.csv");
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
@@ -679,10 +678,12 @@ public class Argumentos {
 
                 linhas[0] = i.verMatricula().toString();
                 linhas[1] = i.getNome();
-                linhas[2] = String.format("%.1f", Double.toString((double)nDisciplinas/periodos.size())) ;
-                if (nDisciplinas!=0) linhas[3] = String.format("%.1f", Double.toString((double)i.getNAvaliacoes()/nDisciplinas));
+                if(periodos.isEmpty()){ linhas[2] = "0";}
+                else linhas[2] = String.format("%.1f", (double)nDisciplinas/periodos.size()) ;
+                if (nDisciplinas!=0) linhas[3] = String.format("%.1f", (double)i.getNAvaliacoes()/nDisciplinas);
                 else linhas[3] = "0";
-                linhas[4] = String.format("%.1f", Double.toString((double)i.getTotalAvaliacoes()/i.getNAvaliacoes()));
+                if(i.getNAvaliacoes() != 0) linhas[4] = String.format("%.1f", i.getTotalAvaliacoes()/i.getNAvaliacoes());
+                else linhas[4] = "0";
                 
                 writer.writeNext(linhas);
             }
@@ -695,48 +696,80 @@ public class Argumentos {
 
     }
 
-}
+    public void estatisticaDisciplinasDocente(){
 
-
-    /*     ESQUELETO DE RELATORIOS
-    
-    File file = new File("relatorios/.csv");
+        File file = new File("relatorios/4-disciplinas.csv");
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
                                             com.opencsv.ICSVWriter.DEFAULT_QUOTE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_ESCAPE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_LINE_END);){
-            
-            String[] linhas = { "", "", "", "", "", "","", "" };
+       
+            String[] linhas = { "Docente", "Periodo", "Codigo", "Nome", "Qtd. Atividades", "% sincronas","% Assincronas", "CH", "Datas Avaliacoes" };
             writer.writeNext(linhas);
         
-        
+            for(Map.Entry<String, Docente> docente: memoria.docentes.entrySet() ){
+
+                Docente professor = docente.getValue();
+                List<Disciplina> listaOrdenada = new ArrayList<>();
+    
+                /* Cria e ordena lista de disciplinas */
+                for(Disciplina i : professor.getDisciplinas()){
+                    listaOrdenada.add(i);
+                }
+    
+                Collections.sort(listaOrdenada, (d1, d2) -> {
+                    int c = d1.getPeriodo().toString().compareTo(d2.getPeriodo().toString());
+                    if (c!=0) return c;
+                    else return d1.getCodigo().compareTo(d2.getCodigo());
+                });
+    
+                for (Disciplina i : listaOrdenada){
+                    List<Atividade> atividadesOrdenada = new ArrayList<>();
+    
+                    /* Cria e ordena a lista de atividades */
+                    for(Map.Entry<Integer, Atividade> j : i.getAtividades().entrySet()){
+                        atividadesOrdenada.add(j.getValue());
+                    }
+    
+                    Collections.sort(atividadesOrdenada, (d1, d2) -> {
+                        int c;
+                        if (d1.getData() != null && d2.getData() != null) {
+                            c = d1.getData().compareTo(d2.getData()); 
+                            if (c!= 0) return c;
+                        }
+                        return d1.getNome().compareTo(d2.getNome()) ;
+                    });
+                    
+                    double porcentagemSincXAssinc = 100 * (double)i.getnAtvSincronas()/(i.getAtividades().size());
+    
+                    linhas[0] = professor.getLogin();
+                    linhas[1] = i.getPeriodo().toString();
+                    linhas[2] = i.getCodigo();
+                    linhas[3] = i.getNome();
+                    linhas[4] = Integer.toString(i.getAtividades().size());
+                    if(i.getAtividades().isEmpty()) linhas[5] = "0";
+                    else linhas[5] = String.format("%.0f" ,porcentagemSincXAssinc);
+                    if(i.getAtividades().isEmpty()) linhas[6] = "0";
+                    else linhas[6] = String.format("%.0f" , (100 - porcentagemSincXAssinc));
+                    linhas[7] = Double.toString(i.getCargaHoraria());
+                    linhas[8] = "";
+                    for(Atividade j : atividadesOrdenada){
+                        if(j instanceof Trabalho || j instanceof Prova){
+                            linhas[8] = linhas[8] + "   " + j.getData();
+                        }
+                    }
+
+                    writer.writeNext(linhas);
+
+                }
+            }
         
         } catch (IOException e) { 
             System.out.println("ERRO DE I/O");
         }
-            
-    */
-    
 
-    /*     ESQUELETO
-    
-    try (FileReader fileReader = new FileReader(filename);
-                CSVReader reader = new CSVReaderBuilder(fileReader).withCSVParser(parser).build();) {
+    }
 
-            String[] linhas;
-            // Pula a primeira linha
-            reader.readNext();
-
-            while ((linhas = reader.readNext()) != null) {
-            
-                
-            
-            }
-
-        } catch (IOException | CsvValidationException e) {
-            System.out.println("ERRO DE I/O");
-        }
-
-    */
+}
