@@ -521,7 +521,7 @@ public class Argumentos {
 
     /* Relatórios */
     public boolean visaoGeralPeriodo(){
-        File file = new File("relatorios/1-visao-geral.csv");
+        File file = new File("1-visao-geral.csv");
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
@@ -581,7 +581,7 @@ public class Argumentos {
 
     public boolean estatisticaDocentes(){
         
-        File file = new File("relatorios/2-docentes.csv");
+        File file = new File("2-docentes.csv");
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
@@ -671,7 +671,7 @@ public class Argumentos {
 
     public boolean estatisticaEstudante(){
 
-        File file = new File("relatorios/3-estudantes.csv");
+        File file = new File("3-estudantes.csv");
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
@@ -732,7 +732,7 @@ public class Argumentos {
 
     public boolean estatisticaDisciplinasDocente(){
 
-        File file = new File("relatorios/4-disciplinas.csv");
+        File file = new File("4-disciplinas.csv");
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',

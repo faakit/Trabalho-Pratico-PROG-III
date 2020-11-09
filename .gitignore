@@ -4,3 +4,5 @@ objs.dat
 *.class
 dados
 relatorios
+*.csv
+build - Copia.xml
