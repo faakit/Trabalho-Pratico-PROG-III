@@ -3,7 +3,7 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="Trabalho-Pratico-PROG-III">
+              as the first entry and export the buildfile again. --><project basedir="." default="compile" name="Trabalho-Pratico-PROG-III">
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="14"/>
@@ -37,7 +37,7 @@
         <delete dir="bin"/>
     </target>
     <target depends="clean" name="cleanall"/>
-    <target depends="build-subprojects,build-project" name="build"/>
+    <target depends="build-subprojects,build-project" name="compile"/>
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
@@ -60,17 +60,8 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="compile">
-        <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir=".">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
     <target name="run">
-        <java classname="src.menus.Main" fork="yes">
+        <java classname="src.menus.Main">
             <arg value="-p" /> 
             <arg value="periodos.csv" /> 
             <arg value="-d" /> 
@@ -89,7 +80,7 @@
         </java>
     </target>
     <target name="run-read-only" description="Executa em modo leitura.">
-        <java classname="src.menus.Main" fork="yes">
+        <java classname="src.menus.Main">
             <arg value="-p" /> 
             <arg value="periodos.csv" /> 
             <arg value="-d" /> 
@@ -109,7 +100,7 @@
         </java>
     </target>
     <target name="run-write-only" description="Executa em modo leitura.">
-        <java classname="src.menus.Main" fork="yes">
+        <java classname="src.menus.Main">
             <arg value="--write-only" /> 
             <classpath refid="run.Main (1).classpath"/>
         </java>

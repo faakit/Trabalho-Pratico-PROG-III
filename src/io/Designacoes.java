@@ -704,7 +704,7 @@ public class Designacoes {
             for(Atividade j : atividadesOrdenada){
                 System.out.println("Nome da atividade: " + j.getNome());
                 if (j.getData() == null){System.out.println("Atividade sem data");}
-                else System.out.println("Data: "+ j.getData().toString());
+                else System.out.println("Data: "+ j.getData());
             }
             System.out.println();
         }

@@ -55,7 +55,7 @@ public class Argumentos {
             System.out.print("Read Only e Write Only encontrados, impossível continuar.");
             return;
         }
-        
+
         /* Caso algum dos métodos argumentos retornem false o programa retorna ao main e interrompe a continuidade */
         if(!writeOnly){
             if(argumentos.contains("-p") && ! argP(args[argumentos.indexOf("-p")+1])) return;
@@ -156,8 +156,6 @@ public class Argumentos {
             reader.readNext();
 
             while ((linhas = reader.readNext()) != null) {
-                
-                linhas = linhas[0].split(Pattern.quote(";"));
 
                 String login = linhas[0];
                 String nome = linhas[1];
@@ -193,8 +191,6 @@ public class Argumentos {
             reader.readNext();
 
             while ((linhas = reader.readNext()) != null) {
-            
-                linhas = linhas[0].split(Pattern.quote(";"));  
                 
                 BigInteger matricula = new BigInteger(linhas[0]);
                 String nome = linhas[1];      
@@ -231,7 +227,6 @@ public class Argumentos {
 
             while ((linhas = reader.readNext()) != null) {
 
-                linhas = linhas[0].split(Pattern.quote(";"));
                 String strPeriodo = linhas[0];
                 String codigo = linhas[1];
                 String nome = linhas[2];
@@ -291,7 +286,6 @@ public class Argumentos {
 
             while ((linhas = reader.readNext()) != null) {
 
-                linhas = linhas[0].split(Pattern.quote(";"));
                 String codigo = linhas[0];
                 String matriculaStr = linhas[1];
                 BigInteger matricula = new BigInteger(matriculaStr);
@@ -525,7 +519,7 @@ public class Argumentos {
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
-                                            com.opencsv.ICSVWriter.DEFAULT_QUOTE_CHARACTER,
+                                            com.opencsv.ICSVWriter.NO_QUOTE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_ESCAPE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_LINE_END);){
             
@@ -585,12 +579,12 @@ public class Argumentos {
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
-                                            com.opencsv.ICSVWriter.DEFAULT_QUOTE_CHARACTER,
+                                            com.opencsv.ICSVWriter.NO_QUOTE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_ESCAPE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_LINE_END);){
             
             /* Cria cabeçalho */ 
-            String[] linhas = { "Docente", "Qtd. Disciplinas", "Qtd. Períodos", "Média Atividades/Disciplina", "% síncronas", "% Assíncronas","Média de Notas"};
+            String[] linhas = { "Docente", "Qtd. Disciplinas", "Qtd. Períodos", "Média Atividades/Disciplina", "% Síncronas", "% Assíncronas","Média de Notas"};
             writer.writeNext(linhas);
             
             List<Docente> listaOrdenada = new ArrayList<>();
@@ -610,7 +604,6 @@ public class Argumentos {
                 double totalNotas=0;
                 int nNotas = 0;
                 int atvSincronas=0;
-                int atvAssincronas=0;
 
                 /* Percorre disciplinas do docente responsável */
                 for(Disciplina j : i.getDisciplinas()){
@@ -618,12 +611,12 @@ public class Argumentos {
                     periodos.add(j.getPeriodo());
                     numeroDisciplinas++; 
                     numeroAtividades += j.getAtividades().size();
-                    atvSincronas = j.getnAtvSincronas();
+                    atvSincronas += j.getnAtvSincronas();
                     
                     /* Percorre Atividades */
                     for(Map.Entry<Integer, Atividade> k : j.getAtividades().entrySet()){
 
-                        nNotas = k.getValue().getNotas().size();
+                        nNotas += k.getValue().getNotas().size();
                             for(Map.Entry<BigInteger, Nota> l : k.getValue().getNotas().entrySet()){
                                 totalNotas += l.getValue().getNotaDoAluno();
                             }
@@ -637,8 +630,8 @@ public class Argumentos {
                 }
 
                 double percentualSincXAssinc=0;
-                if (atvAssincronas != 0){
-                    percentualSincXAssinc = (double)atvSincronas/atvAssincronas * 100;
+                if (numeroAtividades != 0){
+                    percentualSincXAssinc = (double)atvSincronas/numeroAtividades * 100;
                 }
 
                 double mediaNotas=0;
@@ -650,11 +643,11 @@ public class Argumentos {
                 linhas[1] = Integer.toString(numeroDisciplinas);
                 linhas[2] = Integer.toString(periodos.size());
                 linhas[3] = String.format("%.1f", mediaAtivXDisciplina);
-                linhas[4] = String.format("%.0f", percentualSincXAssinc);
+                linhas[4] = String.format("%.0f%%", percentualSincXAssinc);
                 if(numeroAtividades == 0){
-                    linhas[5] = String.valueOf(0);
+                    linhas[5] = "0%";
                 } else{
-                    linhas[5] = String.format("%.0f", (100 - percentualSincXAssinc));
+                    linhas[5] = String.format("%.0f%%", (100 - percentualSincXAssinc));
                 }
                 linhas[6] =  String.format("%.1f" , mediaNotas);
                 writer.writeNext(linhas);
@@ -675,11 +668,10 @@ public class Argumentos {
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
-                                            com.opencsv.ICSVWriter.DEFAULT_QUOTE_CHARACTER,
+                                            com.opencsv.ICSVWriter.NO_QUOTE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_ESCAPE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_LINE_END);){
-
-            String[] linhas = { "Matricula", "Nome", "Media Disciplinas/Periodo", "Media avaliacoes/Disciplina", "Media Notas Avaliacoes"};
+            String[] linhas = { "Matrícula", "Nome", "Média Disciplinas/Período", "Média Avaliações/Disciplina", "Média Notas Avaliações"};
             writer.writeNext(linhas);
         
             List<Estudante> listaOrdenada = new ArrayList<>();
@@ -711,12 +703,12 @@ public class Argumentos {
 
                 linhas[0] = i.verMatricula().toString();
                 linhas[1] = i.getNome();
-                if(periodos.isEmpty()){ linhas[2] = "0";}
+                if(periodos.isEmpty()){ linhas[2] = "0,0";}
                 else linhas[2] = String.format("%.1f", (double)nDisciplinas/periodos.size()) ;
                 if (nDisciplinas!=0) linhas[3] = String.format("%.1f", (double)i.getNAvaliacoes()/nDisciplinas);
-                else linhas[3] = "0";
+                else linhas[3] = "0,0";
                 if(i.getNAvaliacoes() != 0) linhas[4] = String.format("%.1f", i.getTotalAvaliacoes()/i.getNAvaliacoes());
-                else linhas[4] = "0";
+                else linhas[4] = "0,0";
                 
                 writer.writeNext(linhas);
             }
@@ -736,11 +728,11 @@ public class Argumentos {
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
-                                            com.opencsv.ICSVWriter.DEFAULT_QUOTE_CHARACTER,
+                                            com.opencsv.ICSVWriter.NO_QUOTE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_ESCAPE_CHARACTER,
                                             com.opencsv.ICSVWriter.DEFAULT_LINE_END);){
-       
-            String[] linhas = { "Docente", "Periodo", "Codigo", "Nome", "Qtd. Atividades", "% sincronas","% Assincronas", "CH", "Datas Avaliacoes" };
+
+            String[] linhas = { "Docente", "Período", "Código", "Nome", "Qtd. Atividades", "% Síncronas","% Assíncronas", "CH", "Datas Avaliações" };
             writer.writeNext(linhas);
         
             for(Map.Entry<String, Docente> docente: memoria.docentes.entrySet() ){
@@ -754,9 +746,16 @@ public class Argumentos {
                 }
     
                 Collections.sort(listaOrdenada, (d1, d2) -> {
+                    System.out.println(d1.toString());
+                    System.out.println(d2.toString());
                     int c = d1.getPeriodo().toString().compareTo(d2.getPeriodo().toString());
+                    System.out.println(c);
                     if (c!=0) return c;
-                    else return d1.getCodigo().compareTo(d2.getCodigo());
+                    else {
+                        c= d1.getCodigo().compareTo(d2.getCodigo());
+                        System.out.println(c);
+                        return c;
+                    }
                 });
     
                 for (Disciplina i : listaOrdenada){
@@ -783,15 +782,15 @@ public class Argumentos {
                     linhas[2] = i.getCodigo();
                     linhas[3] = i.getNome();
                     linhas[4] = Integer.toString(i.getAtividades().size());
-                    if(i.getAtividades().isEmpty()) linhas[5] = "0";
-                    else linhas[5] = String.format("%.0f" ,porcentagemSincXAssinc);
-                    if(i.getAtividades().isEmpty()) linhas[6] = "0";
-                    else linhas[6] = String.format("%.0f" , (100 - porcentagemSincXAssinc));
+                    if(i.getAtividades().isEmpty()) linhas[5] = "0%";
+                    else linhas[5] = String.format("%.0f%%" ,porcentagemSincXAssinc);
+                    if(i.getAtividades().isEmpty()) linhas[6] = "0%";
+                    else linhas[6] = String.format("%.0f%%" , (100 - porcentagemSincXAssinc));
                     linhas[7] = Double.toString(i.getCargaHoraria());
                     linhas[8] = "";
                     for(Atividade j : atividadesOrdenada){
                         if(j instanceof Trabalho || j instanceof Prova){
-                            linhas[8] = linhas[8] + "   " + j.getData();
+                            linhas[8] = linhas[8] + j.getData() + " ";
                         }
                     }
 

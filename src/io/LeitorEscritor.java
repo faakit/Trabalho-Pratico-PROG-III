@@ -17,7 +17,7 @@ public class LeitorEscritor {
 
     public void escreverEmDisco() throws Exception {
 
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("objs.dat"));) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("dados.dat"));) {
             out.writeObject(memoria.getDisciplinas());
             out.writeObject(memoria.getDocentes());
             out.writeObject(memoria.getEstudantes());
@@ -30,7 +30,7 @@ public class LeitorEscritor {
 
     public void lerDoDisco() throws Exception {
 
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("objs.dat"));) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("dados.dat"));) {
             this.memoria.setDisciplinas((Map<String, Disciplina>) in.readObject());
             this.memoria.setDocentes((Map<String, Docente>) in.readObject());
             this.memoria.setEstudantes((Map<BigInteger, Estudante>) in.readObject());
