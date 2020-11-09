@@ -5,10 +5,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,62 +42,69 @@ public class Argumentos {
     }
 
     public void checaArgumentos() {
-        int index = 0;
-        int writeOnly;
-        int readOnly;
+        boolean writeOnly = false;
+        boolean readOnly = false;
 
-        for (String i : args) {
-            index++;
+        //Joga os args para uma lista de strings
+        List<String> argumentos = new ArrayList<>(Arrays.asList(args));
 
-            switch (i) {
-                case "-p":
-                    argP(args[index]);
-                    break;
-                case "-d":
-                    argD(args[index]);
-                    break;
-                case "-o":
-                    argO(args[index]);
-                    break;
-                case "-e":
-                    argE(args[index]);
-                    break;
-                case "-m":
-                    argM(args[index]);
-                    break;
-                case "-a":
-                    argA(args[index]);
-                    break;
-                case "-n":
-                    argN(args[index]);
-                    break;
-                case "--read-only":
-                    break;
-                case "--write-only":
-                    break;
-                case "-teste":
-                    visaoGeralPeriodo();
-                    estatisticaDocentes();
-                    estatisticaEstudante();
-                    estatisticaDisciplinasDocente();
-                    break;
-                case "-menu":
-                    MenuPrincipal menu = new MenuPrincipal(scanner, memoria);
-                    try {
-                        menu.menu();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    break;
+        if(argumentos.contains("--read-only")) readOnly = true ;
+        if(argumentos.contains("--write-only")) writeOnly = true ;
+
+        if( readOnly && writeOnly) {
+            System.out.print("Read Only e Write Only encontrados, impossível continuar.");
+            return;
+        }
+        
+        /* Caso algum dos métodos argumentos retornem false o programa retorna ao main e interrompe a continuidade */
+        if(!writeOnly){
+            if(argumentos.contains("-p") && ! argP(args[argumentos.indexOf("-p")+1])) return;
+            if(argumentos.contains("-d") && ! argD(args[argumentos.indexOf("-d")+1])) return;
+            if(argumentos.contains("-o") && ! argO(args[argumentos.indexOf("-o")+1])) return;
+            if(argumentos.contains("-e") && ! argE(args[argumentos.indexOf("-e")+1])) return;
+            if(argumentos.contains("-m") && ! argM(args[argumentos.indexOf("-m")+1])) return;
+            if(argumentos.contains("-a") && ! argA(args[argumentos.indexOf("-a")+1])) return;
+            if(argumentos.contains("-n") && ! argN(args[argumentos.indexOf("-n")+1])) return;
+        } else {
+            LeitorEscritor dados = new LeitorEscritor(memoria);
+            try{
+                dados.lerDoDisco();
+            } catch(Exception e){
+                System.out.println("ERRO DE I/O");
+                return;
             }
+            
+        }
 
+        if(!readOnly){
+            if(! visaoGeralPeriodo()) return;
+            if(! estatisticaDocentes()) return;
+            if(! estatisticaEstudante()) return;
+            if(! estatisticaDisciplinasDocente()) return;
+        } else {
+            LeitorEscritor dados = new LeitorEscritor(memoria);
+            try{
+                dados.escreverEmDisco();
+            } catch(Exception e){
+                System.out.println("ERRO DE I/O");
+                return;
+            }
+            
+        }
+
+        if (argumentos.contains("-menu")) {
+            MenuPrincipal menu = new MenuPrincipal(scanner, memoria);
+            try {
+                menu.menu();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
 
-    private void argP(String filename) {
+    private boolean argP(String filename) {
+
         /* ARMAZENA PERIODOS */
         try (FileReader fileReader = new FileReader(filename);
                 CSVReader reader = new CSVReaderBuilder(fileReader).withCSVParser(parser).build();) {
@@ -114,14 +121,14 @@ public class Argumentos {
 
                 if (semestre.length() != 1) {
                     System.out.println("Dado Inválido: (semestre) " + semestre);
-                    return;
+                    return false;
                 }
 
                 Periodo periodo = new Periodo(ano, semestre);
 
                 if (memoria.periodos.get(periodo.toString()) != null) {
                     System.out.println("Cadastro repetido: " + periodo);
-                    return;
+                    return false;
                 }
 
                 memoria.periodos.put(periodo.toString(), periodo);
@@ -130,13 +137,16 @@ public class Argumentos {
 
         } catch (IOException | CsvValidationException e) {
             System.out.println("ERRO DE I/O");
+            return false;
         } catch (NumberFormatException e) {
             System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return false;
         }
 
+        return true;
     }
 
-    private void argD(String filename){
+    private boolean argD(String filename){
         /* ARMAZENA DOCENTES */
         try (FileReader fileReader = new FileReader(filename);
                 CSVReader reader = new CSVReaderBuilder(fileReader).withCSVParser(parser).build();) {
@@ -157,7 +167,7 @@ public class Argumentos {
 
                 if(memoria.getDocentes().get(login) != null){
                     System.out.println("Cadastro repetido: " + login);
-                    return;
+                    return false;
                 }
         
                 Docente novoDocente = new Docente(login, nome, website);
@@ -167,10 +177,13 @@ public class Argumentos {
 
         } catch (IOException | CsvValidationException e) {
             System.out.println("ERRO DE I/O");
+            return false;
         }
+
+        return true;
     }
 
-    private void argE(String filename){
+    private boolean argE(String filename){
         /* ARMAZENA ESTUDANTES */
         try (FileReader fileReader = new FileReader(filename);
                 CSVReader reader = new CSVReaderBuilder(fileReader).withCSVParser(parser).build();) {
@@ -188,7 +201,7 @@ public class Argumentos {
 
                 if(memoria.estudantes.get(matricula) != null){
                     System.out.println("Cadastro repetido: " + matricula);
-                    return;
+                    return false;
                 }
 
                 Estudante novoEstudante = new Estudante(matricula, nome);
@@ -198,13 +211,16 @@ public class Argumentos {
 
         } catch (IOException | CsvValidationException e) {
             System.out.println("ERRO DE I/O");
+            return false;
         } catch(IllegalArgumentException e){
             System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return false;
         }
 
+        return true;
     }
 
-    private void argO(String filename){
+    private boolean argO(String filename){
         /* ARMAZENA DISCIPLINAS */
         try (FileReader fileReader = new FileReader(filename);
                 CSVReader reader = new CSVReaderBuilder(fileReader).withCSVParser(parser).build();) {
@@ -227,24 +243,24 @@ public class Argumentos {
 
                 if(semestre.length() != 1){
                     System.out.println("Dado Inválido: (semestre) " + semestre);
-                    return;
+                    return false;
                 }
 
                 if(memoria.disciplinas.get(codigo + "-" + strPeriodo) != null){
                     System.out.println("Cadastro repetido: " + codigo + "-" + strPeriodo);
-                    return;
+                    return false;
                 }
         
                 if (memoria.periodos.get(strPeriodo) == null){
                     System.out.println("Referência inválida: " + strPeriodo);
-                    return;
+                    return false;
                 }
 
                 Periodo periodo = memoria.periodos.get(strPeriodo);
 
                 if (memoria.docentes.get(strProfessor) == null){
                     System.out.println("Referência inválida: " + strProfessor);
-                    return;
+                    return false;
                 }
 
                 Docente professor = memoria.docentes.get(strProfessor);
@@ -258,10 +274,13 @@ public class Argumentos {
 
         } catch (IOException | CsvValidationException e) {
             System.out.println("ERRO DE I/O");
+            return false;
         }
+
+        return true;
     }
 
-    private void argM(String filename){
+    private boolean argM(String filename){
         /* RELACIONA ESTUDANTES A DISCIPLINAS */
         try (FileReader fileReader = new FileReader(filename);
                 CSVReader reader = new CSVReaderBuilder(fileReader).withCSVParser(parser).build();) {
@@ -279,7 +298,7 @@ public class Argumentos {
                 
                 if (memoria.estudantes.get(matricula) == null){
                     System.out.println("Referência inválida: " + matricula);
-                    return;
+                    return false;
                 }
 
                 String periodo = codigo.split(Pattern.quote("-"))[1];
@@ -288,17 +307,17 @@ public class Argumentos {
 
                 if(semestre.length() != 1){
                     System.out.println("Dado Inválido: (semestre) " + semestre);
-                    return;
+                    return false;
                 }
 
                 if (memoria.disciplinas.get(codigo + "-" + periodo) == null){
                     System.out.println("Referência inválida: " + codigo + "-" + periodo);
-                    return;
+                    return false;
                 }
 
                 if (memoria.disciplinas.get(codigo + "-" + periodo).getAlunos().get(matricula) != null){
                     System.out.println("Matricula repetida: " + matricula + " em " + codigo + "-" + periodo);
-                    return;
+                    return false;
                 }
 
                 memoria.disciplinas.get(codigo + "-" + periodo).getAlunos().put(matricula, memoria.estudantes.get(matricula));
@@ -308,13 +327,16 @@ public class Argumentos {
 
         } catch (IOException | CsvValidationException e) {
             System.out.println("ERRO DE I/O");
+            return false;
         } catch(IllegalArgumentException e){
             System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return false;
         }
 
+        return true;
     }
 
-    private void argA(String filename){
+    private boolean argA(String filename){
         /* ARMAZENA ATIVIDADES DE DISCIPLINAS */
         try (FileReader fileReader = new FileReader(filename);
         CSVReader reader = new CSVReaderBuilder(fileReader).withCSVParser(parser).build();) {
@@ -334,12 +356,12 @@ public class Argumentos {
 
                 if(semestre.length() != 1){
                     System.out.println("Dado Inválido: (semestre) " + semestre);
-                    return;
+                    return false;
                 }
 
                 if (memoria.disciplinas.get(codigo + "-" + periodo) == null){
                     System.out.println("Referência inválida: " + codigo + "-" + periodo);
-                    return;
+                    return false;
                 }
 
                 //Verifica tipo de atividade
@@ -413,17 +435,21 @@ public class Argumentos {
 
                 else {
                     System.out.println("Dado invalido: Tipo nao especificado");
-                    return;
+                    return false;
                 }
             }
         } catch (IOException | CsvValidationException e) {
             System.out.println("ERRO DE I/O");
+            return false;
         } catch(IllegalArgumentException e){
             System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return false;
         }
+
+        return true;
     }
 
-    private void argN(String filename){
+    private boolean argN(String filename){
 
         /* ATRIBUI AVALIAÇOES DE ATIVIDADES POR ALUNOS */
         try (FileReader fileReader = new FileReader(filename);
@@ -451,28 +477,29 @@ public class Argumentos {
 
                 if(semestre.length() != 1){
                     System.out.println("Dado Inválido: (semestre) " + semestre);
-                    return;
+                    return false;
                 }
 
                 if (memoria.disciplinas.get(codigo + "-" + periodo) == null){
                     System.out.println("Referência inválida: " + codigo + "-" + periodo);
-                    return;
+                    return false;
                 }
 
                 Disciplina disciplina = memoria.disciplinas.get(codigo + "-" + periodo); 
             
                 if (disciplina.getAtividades().get(nAtividade) == null){
                     System.out.println("Referência inválida a atividade de número: " + nAtividade);
-                    return;
+                    return false;
                 }
                 
                 if (memoria.estudantes.get(matricula) == null){
                     System.out.println("Referência inválida: " + matricula);
-                    return;
+                    return false;
                 }
 
                 if (disciplina.getAtividades().get(nAtividade).getNotas().get(matricula) != null ){
                     System.out.println("Avaliação repetida: estudante " + matricula + " para atividade " + nAtividade + " de " + disciplina);
+                    return false;
                 }
 
                 Nota novaNota = new Nota(memoria.estudantes.get(matricula), nota);
@@ -483,14 +510,17 @@ public class Argumentos {
             }
         } catch (IOException | CsvValidationException e) {
             System.out.println("ERRO DE I/O");
+            return false;
         } catch(IllegalArgumentException e){
             System.out.println(e.getLocalizedMessage().replaceFirst("For input string: ", "Dado inválido: "));
+            return false;
         }
         
+        return true;
     }
 
     /* Relatórios */
-    public void visaoGeralPeriodo(){
+    public boolean visaoGeralPeriodo(){
         File file = new File("relatorios/1-visao-geral.csv");
 
         try(FileWriter output = new FileWriter(file);
@@ -543,12 +573,13 @@ public class Argumentos {
             }
         } catch (IOException e) { 
             System.out.println("ERRO DE I/O");
+            return false;
         } 
         
-        
+        return true;
     }
 
-    public void estatisticaDocentes(){
+    public boolean estatisticaDocentes(){
         
         File file = new File("relatorios/2-docentes.csv");
 
@@ -632,11 +663,13 @@ public class Argumentos {
         
         } catch (IOException e) { 
             System.out.println("ERRO DE I/O");
+            return false;
         }
 
+        return true;
     }
 
-    public void estatisticaEstudante(){
+    public boolean estatisticaEstudante(){
 
         File file = new File("relatorios/3-estudantes.csv");
 
@@ -690,13 +723,14 @@ public class Argumentos {
         
         } catch (IOException e) { 
             System.out.println("ERRO DE I/O");
+            return false;
         }
 
-        
+        return true;
 
     }
 
-    public void estatisticaDisciplinasDocente(){
+    public boolean estatisticaDisciplinasDocente(){
 
         File file = new File("relatorios/4-disciplinas.csv");
 
@@ -768,8 +802,10 @@ public class Argumentos {
         
         } catch (IOException e) { 
             System.out.println("ERRO DE I/O");
+            return false;
         }
 
+        return true;
     }
 
 }
