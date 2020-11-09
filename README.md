@@ -6,8 +6,11 @@ Aluno: André Altoé Santiago
 Para compilar e rodar a aplicação basta:
 
 - abrir um Shell/Prompt de comando na pasta com os arquivos
-- executar o comando "javac src\menus\Main.java"
-- executar o comando "java src/menus/Main"
+- executar o comando "ant"
+- executar o comando "ant run" para rodar o programa com os argumentos padrão
+- ou "ant run-write-only" para rodar em modo somente escrita com serialização
+- ou "ant run-read-only" para rodar em modo somente leitura com serialização
+- ou "ant run-menu-only" para rodar apenas o menu com serialização
 
 To do:
 - Parte 4

@@ -105,4 +105,10 @@
             <classpath refid="run.Main (1).classpath"/>
         </java>
     </target>
+    <target name="run-menu-only" description="Executa em modo leitura.">
+        <java classname="src.menus.Main">
+            <arg value="-menu" /> 
+            <classpath refid="run.Main (1).classpath"/>
+        </java>
+    </target>
 </project>

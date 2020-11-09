@@ -411,13 +411,21 @@ public class Argumentos {
 
                 else if (tipo.equals("E")){
                     Map<String, String> materiais = new HashMap<>();
+                    int nConteudos= 1;
 
-                    String[] materiaisStr = linhas[5].split(Pattern.quote(")"));
-                    int nConteudos = materiaisStr.length / 2 ;
+                    List<String> materiaisStr = new ArrayList<>();
 
+                    try{
+                        materiaisStr = Arrays.asList(linhas[5].split(Pattern.quote(")"))); 
+                        nConteudos = materiaisStr.size() / 2 ; 
+                    } catch (Exception e) {
+                        System.out.println("ERRO DE I/O (dentro do arquivo)");
+                        return false;
+                    }
+                    
                     for(int j = 0; j < nConteudos ; j++ ){
-                        String materialNome = materiaisStr[j].split(Pattern.quote("]"))[0] + "]";
-                        String materialUrl = materiaisStr[j].split(Pattern.quote("]"))[1] + ")";
+                        String materialNome = materiaisStr.get(j).split(Pattern.quote("]"))[0] + "]";
+                        String materialUrl = materiaisStr.get(j).split(Pattern.quote("]"))[1] + ")";
 
                         materiais.put(materialNome, materialUrl);           
                     }

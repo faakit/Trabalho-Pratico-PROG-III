@@ -5,5 +5,5 @@ objs.dat
 dados
 relatorios
 *.csv
-build - Copia.xml
 bin
+.vs
