@@ -1,114 +1,116 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- WARNING: Eclipse auto-generated file.
-              Any modifications will be overwritten.
-              To include a user specific buildfile here, simply create one in the same
-              directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="compile" name="Trabalho-Pratico-PROG-III">
-    <property environment="env"/>
-    <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="14"/>
-    <property name="source" value="14"/>
-    <path id="Trabalho-Pratico-PROG-III.classpath">
-        <pathelement location="bin"/>
-        <pathelement location="lib/opencsv.jar"/>
-        <pathelement location="lib/commons-beanutils-1.9.4.jar"/>
-        <pathelement location="lib/commons-collections4-4.4.jar"/>
-        <pathelement location="lib/commons-lang3-3.11.jar"/>
-        <pathelement location="lib/commons-text-1.9.jar"/>
-    </path>
-    <path id="run.Main (1).classpath">
-        <path refid="Trabalho-Pratico-PROG-III.classpath"/>
-        <pathelement location="lib/opencsv.jar"/>
-        <pathelement location="lib/commons-beanutils-1.9.4.jar"/>
-        <pathelement location="lib/commons-collections4-4.4.jar"/>
-        <pathelement location="lib/commons-lang3-3.11.jar"/>
-        <pathelement location="lib/commons-text-1.9.jar"/>
-    </path>
-    <target name="init">
-        <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir=".">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="clean">
-        <delete dir="bin"/>
-    </target>
-    <target depends="clean" name="cleanall"/>
-    <target depends="build-subprojects,build-project" name="compile"/>
-    <target name="build-subprojects"/>
-    <target depends="init" name="build-project">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
-            <src path="."/>
-            <classpath refid="Trabalho-Pratico-PROG-III.classpath"/>
-        </javac>
-    </target>
-    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
-    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
-        <copy todir="${ant.library.dir}">
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </copy>
-        <unzip dest="${ant.library.dir}">
-            <patternset includes="jdtCompilerAdapter.jar"/>
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </unzip>
-    </target>
-    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
-        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-        <antcall target="build"/>
-    </target>
-    <target name="run">
-        <java classname="src.menus.Main">
-            <arg value="-p" /> 
-            <arg value="periodos.csv" /> 
-            <arg value="-d" /> 
-            <arg value="docentes.csv" /> 
-            <arg value="-o" /> 
-            <arg value="disciplinas.csv" /> 
-            <arg value="-e" /> 
-            <arg value="estudantes.csv" /> 
-            <arg value="-m" /> 
-            <arg value="matriculas.csv" /> 
-            <arg value="-a" /> 
-            <arg value="atividades.csv" /> 
-            <arg value="-n" /> 
-            <arg value="avaliacoes.csv" /> 
-            <classpath refid="run.Main (1).classpath"/>
-        </java>
-    </target>
-    <target name="run-read-only" description="Executa em modo leitura.">
-        <java classname="src.menus.Main">
-            <arg value="-p" /> 
-            <arg value="periodos.csv" /> 
-            <arg value="-d" /> 
-            <arg value="docentes.csv" /> 
-            <arg value="-o" /> 
-            <arg value="disciplinas.csv" /> 
-            <arg value="-e" /> 
-            <arg value="estudantes.csv" /> 
-            <arg value="-m" /> 
-            <arg value="matriculas.csv" /> 
-            <arg value="-a" /> 
-            <arg value="atividades.csv" /> 
-            <arg value="-n" /> 
-            <arg value="avaliacoes.csv" /> 
-            <arg value="--read-only" />
-            <classpath refid="run.Main (1).classpath"/>
-        </java>
-    </target>
-    <target name="run-write-only" description="Executa em modo leitura.">
-        <java classname="src.menus.Main">
-            <arg value="--write-only" /> 
-            <classpath refid="run.Main (1).classpath"/>
-        </java>
-    </target>
-    <target name="run-menu-only" description="Executa em modo leitura.">
-        <java classname="src.menus.Main">
-            <arg value="-menu" /> 
-            <classpath refid="run.Main (1).classpath"/>
-        </java>
-    </target>
+<project name="Trabalho-Pratico-PROG-III" default="compile" basedir=".">
+  <description>Arquivo de build do trabalho de Prog3, 2020/E.</description> 
+  <!-- Propriedades do build. --> 
+  <property name="src" location="" /> 
+  <property name="bin" location="bin" /> 
+  <property name="mainclass" value="src.menus.Main" />
+  <!-- Inicialização. --> 
+  <target name="init" description="Inicializa as estruturas necessárias."> 
+  <tstamp/> 
+  <mkdir dir="${bin}" /> 
+  </target> 
+  <!-- Compilação. --> 
+  <target name="compile" depends="init" description="Compila o código-fonte."> 
+    <javac includeantruntime="false" srcdir="${src}" destdir="${bin}" >
+    <classpath>
+      <pathelement location="lib/opencsv.jar" />
+      <pathelement location="lib/commons-beanutils-1.9.4.jar" />
+      <pathelement location="lib/commons-collections4-4.4.jar" />
+      <pathelement location="lib/commons-lang3-3.11.jar" />
+      <pathelement location="lib/commons-text-1.9.jar" />
+    </classpath>
+    </javac>
+  </target> 
+  <!-- Execução normal. --> 
+  <target name="run" depends="compile" description="Executa o programa principal, normal.">
+    <java classname="${mainclass}" >
+      <classpath>
+        <pathelement location="lib/opencsv.jar" />
+        <pathelement location="lib/commons-beanutils-1.9.4.jar" />
+        <pathelement location="lib/commons-collections4-4.4.jar" />
+        <pathelement location="lib/commons-lang3-3.11.jar" />
+        <pathelement location="lib/commons-text-1.9.jar" />
+      </classpath>
+      <arg value="-p" /> 
+      <arg value="periodos.csv" /> 
+      <arg value="-d" /> 
+      <arg value="docentes.csv" /> 
+      <arg value="-o" /> 
+      <arg value="disciplinas.csv" /> 
+      <arg value="-e" /> 
+      <arg value="estudantes.csv" /> 
+      <arg value="-m" /> 
+      <arg value="matriculas.csv" /> 
+      <arg value="-a" /> 
+      <arg value="atividades.csv" /> 
+      <arg value="-n" /> 
+      <arg value="avaliacoes.csv" /> 
+      <classpath> 
+        <pathelement path="${bin}" /> 
+      </classpath> 
+    </java> 
+  </target> 
+  <!-- Execução somente leitura. --> 
+  <target name="run-read-only" depends="compile" description="Executa em modo leitura.">
+    <java classname="${mainclass}">
+      <classpath>
+        <pathelement location="lib/opencsv.jar" />
+        <pathelement location="lib/commons-beanutils-1.9.4.jar" />
+        <pathelement location="lib/commons-collections4-4.4.jar" />
+        <pathelement location="lib/commons-lang3-3.11.jar" />
+        <pathelement location="lib/commons-text-1.9.jar" />
+      </classpath>
+      <arg value="-p" /> 
+      <arg value="periodos.csv" /> 
+      <arg value="-d" /> 
+      <arg value="docentes.csv" /> 
+      <arg value="-o" /> 
+      <arg value="disciplinas.csv" /> 
+      <arg value="-e" /> 
+      <arg value="estudantes.csv" /> 
+      <arg value="-m" /> 
+      <arg value="matriculas.csv" /> 
+      <arg value="-a" /> 
+      <arg value="atividades.csv" /> 
+      <arg value="-n" /> 
+      <arg value="avaliacoes.csv" /> 
+      <arg value="--read-only" /> 
+      <classpath> 
+      <pathelement path="${bin}" /> </classpath>
+    </java> 
+  </target> 
+  <!-- Execução somente escrita. --> 
+  <target name="run-write-only" depends="compile" description="Executa em modo escrita.">
+    <java classname="${mainclass}"> 
+      <classpath>
+        <pathelement location="lib/opencsv.jar" />
+        <pathelement location="lib/commons-beanutils-1.9.4.jar" />
+        <pathelement location="lib/commons-collections4-4.4.jar" />
+        <pathelement location="lib/commons-lang3-3.11.jar" />
+        <pathelement location="lib/commons-text-1.9.jar" />
+      </classpath>
+      <arg value="--write-only" /> 
+      <classpath> 
+      <pathelement path="${bin}" /> </classpath> 
+    </java> 
+  </target> 
+  <!-- Execução somente menu e serialização. --> 
+  <target name="run-menu-only" depends="compile" description="Executa em modo escrita.">
+    <java classname="${mainclass}"> 
+      <classpath>
+        <pathelement location="lib/opencsv.jar" />
+        <pathelement location="lib/commons-beanutils-1.9.4.jar" />
+        <pathelement location="lib/commons-collections4-4.4.jar" />
+        <pathelement location="lib/commons-lang3-3.11.jar" />
+        <pathelement location="lib/commons-text-1.9.jar" />
+      </classpath>
+      <arg value="-menu" /> 
+      <classpath> 
+      <pathelement path="${bin}" /> </classpath> 
+    </java> 
+  </target> 
+  <!-- Limpeza. --> 
+  <target name="clean" description="Limpa o projeto, deixando apenas o código-fonte, CSV's e Serialização." >
+    <delete dir="${bin}"/> 
+  </target>
 </project>

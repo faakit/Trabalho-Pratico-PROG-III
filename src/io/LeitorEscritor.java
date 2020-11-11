@@ -23,7 +23,7 @@ public class LeitorEscritor {
             out.writeObject(memoria.getEstudantes());
             out.writeObject(memoria.getPeriodos());
         } catch (Exception e) {
-            System.out.println("Erro de I/O");
+            System.out.println("Erro de i/o.");
         }
 
     }
@@ -36,7 +36,7 @@ public class LeitorEscritor {
             this.memoria.setEstudantes((Map<BigInteger, Estudante>) in.readObject());
             this.memoria.setPeriodos((Map<String, Periodo>) in.readObject());
         } catch (Exception e){
-            System.out.println("Erro de I/O");
+            System.out.println("Erro de i/o.");
         }
 
     }
