@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.text.Collator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -120,7 +122,7 @@ public class Argumentos {
                 String semestre = linhas[1].toUpperCase();
 
                 if (semestre.length() != 1) {
-                    System.out.print("Dado Inválido: " + semestre + ".");
+                    System.out.print("Dado Inválido: " + linhas[1] + ".");
                     return false;
                 }
 
@@ -308,7 +310,7 @@ public class Argumentos {
                 }
 
                 if (memoria.disciplinas.get(codigo + "-" + periodo).getAlunos().get(matricula) != null){
-                    System.out.print("Matricula repetida: " + matricula + " em " + codigo + "-" + periodo + ".");
+                    System.out.print("Matrícula repetida: " + matricula + " em " + codigo + "-" + periodo + ".");
                     return false;
                 }
 
@@ -539,6 +541,9 @@ public class Argumentos {
     public boolean visaoGeralPeriodo(){
         File file = new File("1-visao-geral.csv");
 
+        Collator collator = Collator.getInstance(Locale.getDefault());
+        collator.setStrength(Collator.PRIMARY);
+
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
                                             com.opencsv.ICSVWriter.NO_QUOTE_CHARACTER,
@@ -558,11 +563,11 @@ public class Argumentos {
             /* Ordena por ano e semestre crescente */
             Collections.sort(periodosOrdenados, (d1, d2) -> {
                 int c = d1.getAno() - d2.getAno();
-                if (c!=0) return c;
-                else return d1.getSemestre().compareTo(d2.getSemestre());
+                if (c==0) c= d1.getSemestre().compareTo(d2.getSemestre());
+                return c;
             });
 
-            for(Periodo entrada : periodosOrdenados){
+            for(Periodo entrada: periodosOrdenados){
                 List<Disciplina> listaOrdenada = new ArrayList<>();
 
                 /* Pega as disciplinas no período informado e coloca em uma lista */
@@ -572,7 +577,7 @@ public class Argumentos {
                 }
             
                 /* Ordena a lista em ordem crescente de nome da disciplina */
-                Collections.sort(listaOrdenada, (d1, d2) ->   d1.getNome().compareTo(d2.getNome()));
+                Collections.sort(listaOrdenada, (d1, d2) -> collator.compare(d1.getNome(), d2.getNome()));
 
                 for(Disciplina j : listaOrdenada){
                     /* Escreve o array e depois o escreve no csv */
@@ -599,6 +604,9 @@ public class Argumentos {
         
         File file = new File("2-docentes.csv");
 
+        Collator collator = Collator.getInstance(Locale.getDefault());
+        collator.setStrength(Collator.PRIMARY);
+
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
                                             com.opencsv.ICSVWriter.NO_QUOTE_CHARACTER,
@@ -617,7 +625,7 @@ public class Argumentos {
             }
 
             /* Ordena a lista em ordem decrescente de nome */
-            Collections.sort(listaOrdenada, (d1, d2) ->   d2.getNome().compareTo(d1.getNome()));
+            Collections.sort(listaOrdenada, (d1, d2) ->  collator.compare(d2.getNome(), d1.getNome()));
 
             for(Docente i : listaOrdenada){
                 Set<Periodo> periodos = new HashSet<>();
@@ -688,6 +696,9 @@ public class Argumentos {
 
         File file = new File("3-estudantes.csv");
 
+        Collator collator = Collator.getInstance(Locale.getDefault());
+        collator.setStrength(Collator.PRIMARY);
+
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
                                             com.opencsv.ICSVWriter.NO_QUOTE_CHARACTER,
@@ -707,7 +718,7 @@ public class Argumentos {
             Collections.sort(listaOrdenada, (d1, d2) -> {
                 int c = d2.getNAvaliacoes() - d1.getNAvaliacoes();
                 if (c!=0) return c;
-                else return d1.getNome().compareTo(d2.getNome());
+                else return collator.compare(d1.getNome(), d2.getNome());
             });
 
             for(Estudante i : listaOrdenada){
@@ -747,6 +758,8 @@ public class Argumentos {
     public boolean estatisticaDisciplinasDocente(){
 
         File file = new File("4-disciplinas.csv");
+        Collator collator = Collator.getInstance(Locale.getDefault());
+        collator.setStrength(Collator.PRIMARY);
 
         try(FileWriter output = new FileWriter(file);
             CSVWriter writer = new CSVWriter(output, ';',
@@ -765,17 +778,17 @@ public class Argumentos {
                 /* Cria e ordena lista de disciplinas */
                 for(Disciplina i : professor.getDisciplinas()){
                     listaOrdenada.add(i);
+
                 }
     
                 Collections.sort(listaOrdenada, (d1, d2) -> {
-                    int c = d1.getPeriodo().toString().compareTo(d2.getPeriodo().toString());
-                    if (c==0) c= d1.getCodigo().compareTo(d2.getCodigo());
+                    int c = collator.compare(d1.getPeriodo().toString(), d2.getPeriodo().toString()); 
+                    if (c==0) c=  collator.compare(d1.getCodigo(), d2.getCodigo());
                     return c;
                 });
     
                 for (Disciplina i : listaOrdenada){
                     List<Atividade> atividadesOrdenada = new ArrayList<>();
-    
                     /* Cria e ordena a lista de atividades */
                     for(Map.Entry<Integer, Atividade> j : i.getAtividades().entrySet()){
                         atividadesOrdenada.add(j.getValue());
