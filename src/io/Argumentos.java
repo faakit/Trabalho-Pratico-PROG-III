@@ -367,8 +367,8 @@ public class Argumentos {
                     String dataStr = linhas[3].trim() + " " + linhas[4].trim();
 
                     LocalDateTime data;
-                    
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                    System.out.println(linhas[4]);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:mm");
 
                     try{
                         data = LocalDateTime.parse(dataStr, formatter);
@@ -388,7 +388,7 @@ public class Argumentos {
 
                     LocalDateTime data;
                     
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:mm");
                     try{
                         data = LocalDateTime.parse(dataStr, formatter);
                     } catch (Exception e){
@@ -412,7 +412,7 @@ public class Argumentos {
 
                     LocalDateTime data;
                     
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:mm");
                     try{
                         data = LocalDateTime.parse(dataStr, formatter);
                     } catch (Exception e){
