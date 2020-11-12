@@ -3,7 +3,9 @@ package src.dominio;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Estudante implements Serializable  {
         
@@ -14,6 +16,7 @@ public class Estudante implements Serializable  {
         private BigInteger matricula;
         private String nome;
         private List<Disciplina> disciplinas;
+        private Set<Periodo> periodos;
 
         public Estudante(BigInteger matricula, String nome){
                 this.matricula = matricula;
@@ -21,10 +24,15 @@ public class Estudante implements Serializable  {
                 this.disciplinas = new ArrayList<>();
                 this.nAvaliacoes = 0;
                 this.totalAvaliacoes = 0;
+                this.periodos = new HashSet<>();
         }
 
         public void incrementaTotalAvaliacoes(double nota){
                 this.totalAvaliacoes+=nota;
+        }
+
+        public int getNPeriodos(){
+                return this.periodos.size();
         }
 
         public double getTotalAvaliacoes(){
@@ -37,6 +45,7 @@ public class Estudante implements Serializable  {
 
         public void addDisciplina(Disciplina disciplina){
                 this.disciplinas.add(disciplina);
+                this.periodos.add(disciplina.getPeriodo());
         }
 
         public void incrementaAvaliacoes(){

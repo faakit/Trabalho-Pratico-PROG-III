@@ -45,6 +45,7 @@
       <arg value="atividades.csv" /> 
       <arg value="-n" /> 
       <arg value="avaliacoes.csv" /> 
+      <arg value="-Dfile.encoding=UTF-8"/>
       <classpath> 
         <pathelement path="${bin}" /> 
       </classpath> 
@@ -75,6 +76,7 @@
       <arg value="-n" /> 
       <arg value="avaliacoes.csv" /> 
       <arg value="--read-only" /> 
+      <arg value="-Dfile.encoding=UTF-8"/>
       <classpath> 
       <pathelement path="${bin}" /> </classpath>
     </java> 

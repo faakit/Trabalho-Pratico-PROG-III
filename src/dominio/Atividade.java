@@ -44,7 +44,7 @@ public class Atividade implements Serializable {
     }
 
     public String getData(){
-        return null;
+        return "00/00/0000";
     }
 
     public double getCargaHoraria() {

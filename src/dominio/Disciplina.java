@@ -2,9 +2,10 @@ package src.dominio;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.text.Collator;
 import java.util.*;
 
-public class Disciplina implements Serializable {
+public class Disciplina implements Serializable, Comparable<Disciplina> {
 
     private static final long serialVersionUID = 1L;
     
@@ -75,4 +76,20 @@ public class Disciplina implements Serializable {
     public String toString(){
         return this.codigo + "-" + this.periodo.getAno() + "/" + this.periodo.getSemestre();
     }
+
+    @Override
+    public int compareTo(Disciplina o) {
+        //Inicia comparando período
+        int c = this.periodo.compareTo(o.getPeriodo());
+
+        //Caso seja o mesmo período compara o código da disciplina
+        if (c == 0) {
+            Collator collator = Collator.getInstance(Locale.getDefault());
+            collator.setStrength(Collator.PRIMARY);
+            c = collator.compare(this.codigo, o.codigo);
+        }
+        return c;
+    }
+
+    
 }
