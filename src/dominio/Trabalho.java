@@ -21,6 +21,11 @@ public class Trabalho extends Atividade {
     }
 
     @Override
+    public LocalDateTime getLocalDateTime() {
+        return prazo;
+    }
+
+    @Override
     public String getData(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return this.prazo.format(formatter);

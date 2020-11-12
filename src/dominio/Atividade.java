@@ -2,6 +2,7 @@ package src.dominio;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,8 +44,12 @@ public class Atividade implements Serializable {
         return this.sincrona;
     }
 
+    public LocalDateTime getLocalDateTime(){
+        return null;
+    }
+
     public String getData(){
-        return "00/00/0000";
+        return "";
     }
 
     public double getCargaHoraria() {

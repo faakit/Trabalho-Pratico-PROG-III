@@ -784,12 +784,12 @@ public class Argumentos {
                 }
     
                 Collections.sort(atividadesOrdenada, (d1, d2) -> {
-                    int c;
-                    if (d1.getData() != null && d2.getData() != null) {
-                        c = d1.getData().compareTo(d2.getData()); 
-                        if (c!= 0) return c;
+                    int c = 0;
+                    if(d1.getLocalDateTime() != null && d2.getLocalDateTime() != null){
+                        c = d1.getLocalDateTime().compareTo(d2.getLocalDateTime()); 
                     }
-                       return d1.getNome().compareTo(d2.getNome()) ;
+                    if (c!= 0) return c;
+                    return d1.getNome().compareTo(d2.getNome()) ;
                 });
                     
                 double porcentagemSincXAssinc = 100 * (double)i.getnAtvSincronas()/(i.getAtividades().size());

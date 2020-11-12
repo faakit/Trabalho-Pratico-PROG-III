@@ -21,6 +21,11 @@ public class Prova extends Atividade {
     }
 
     @Override
+    public LocalDateTime getLocalDateTime() {
+        return data;
+    }
+
+    @Override
     public String getData(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return this.data.format(formatter);
