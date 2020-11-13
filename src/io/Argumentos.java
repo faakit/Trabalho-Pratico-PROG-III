@@ -367,7 +367,6 @@ public class Argumentos {
                     String dataStr = linhas[3].trim() + " " + linhas[4].trim();
 
                     LocalDateTime data;
-                    System.out.println(linhas[4]);
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy H:mm");
 
                     try{
