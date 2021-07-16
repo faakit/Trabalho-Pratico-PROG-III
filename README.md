@@ -1,5 +1,5 @@
 # Trabalho-Pratico-PROG-III
-Repositório destinado ao trabalho prático da disciplina Progração III na UFES. 
+Repositório destinado ao trabalho prático da disciplina Progração III na UFES. No qual o desafio foi a criação de um sistema escolar em Java.
 
 Aluno: André Altoé Santiago
 
@@ -12,9 +12,4 @@ Para compilar e rodar a aplicação basta:
 - ou "ant run-read-only" para rodar em modo somente leitura com serialização
 - ou "ant run-menu-only" para rodar apenas o menu com serialização
 
-To do:
-- Parte 4
-
 ### Obs: Os comentários de cada commit não contêm muita informação útil e como faço sozinho acabo pegando várias coisas pra fazer, descanso um tempo bom, e depois volto fazendo tudo que preciso
-Email: andrealtosan@gmail.com / andre.santiago@edu.ufes.br
-Telefone: (28) 99985-0991
